@@ -125,8 +125,8 @@ export default function RuinLocationMap({ location }: RuinLocationMapProps) {
           mapInstance.current = Leaflet.map(mapRef.current).setView([location.latitude, location.longitude], 12);
 
           // Add initial tile layer
-          tileLayerRef.current = Leaflet.tileLayer(getTileLayerUrl(resolvedTheme), {
-            attribution: getAttribution(resolvedTheme),
+          tileLayerRef.current = Leaflet!.tileLayer(getTileLayerUrl(resolvedTheme), {
+            attribution: getAttribution(),
             subdomains: 'abcd',
             maxZoom: 19
           }).addTo(mapInstance.current);
@@ -227,8 +227,8 @@ export default function RuinLocationMap({ location }: RuinLocationMapProps) {
           mapInstance.current.removeLayer(tileLayerRef.current);
           
           // Add new tile layer with updated theme
-          tileLayerRef.current = Leaflet.tileLayer(getTileLayerUrl(resolvedTheme), {
-            attribution: getAttribution(resolvedTheme),
+          tileLayerRef.current = Leaflet!.tileLayer(getTileLayerUrl(resolvedTheme), {
+            attribution: getAttribution(),
             subdomains: 'abcd',
             maxZoom: 19
           }).addTo(mapInstance.current);

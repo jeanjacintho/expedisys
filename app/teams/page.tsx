@@ -841,7 +841,7 @@ export default function TeamsPage() {
                                     <div>
                                         <p className="text-xs text-muted-foreground">Idade Média</p>
                                         <p className="text-sm font-medium">
-                                            {Math.round(selectedEquipe.pessoas?.reduce((acc, p) => acc + calcularIdade(p.data_nascimento), 0) / Math.max(selectedEquipe.pessoas?.length || 1, 1))} anos
+                                            {Math.round((selectedEquipe.pessoas?.reduce((acc, p) => acc + calcularIdade(p.data_nascimento), 0) || 0) / Math.max(selectedEquipe.pessoas?.length || 1, 1))} anos
                                         </p>
                                     </div>
                                 </div>
@@ -969,7 +969,7 @@ export default function TeamsPage() {
                                     <div className="flex justify-between">
                                         <span className="text-muted-foreground">Idade Média:</span>
                                         <span className="font-medium">
-                                            {Math.round(selectedEquipe.pessoas?.reduce((acc, p) => acc + calcularIdade(p.data_nascimento), 0) / Math.max(selectedEquipe.pessoas?.length || 1, 1))} anos
+                                            {Math.round((selectedEquipe.pessoas?.reduce((acc, p) => acc + calcularIdade(p.data_nascimento), 0) || 0) / Math.max(selectedEquipe.pessoas?.length || 1, 1))} anos
                                         </span>
                                     </div>
                                 </div>

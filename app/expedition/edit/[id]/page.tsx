@@ -40,7 +40,7 @@ interface Ruina {
   descricao: string
 }
 
-export default function EditExpedicaoPage({ params }: { params: { id: string } }) {
+export default function EditExpedicaoPage({ params }: any) {
   const router = useRouter()
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)

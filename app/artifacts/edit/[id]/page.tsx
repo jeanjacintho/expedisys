@@ -37,7 +37,7 @@ interface ImportanciaHistorica {
   descricao: string
 }
 
-export default function EditArtefatoPage({ params }: { params: { id: string } }) {
+export default function EditArtefatoPage({ params }: any) {
   const router = useRouter()
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
