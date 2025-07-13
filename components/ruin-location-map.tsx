@@ -79,7 +79,7 @@ const getTileLayerUrl = (theme: string | undefined) => {
 };
 
 // Get attribution based on theme
-const getAttribution = (theme: string | undefined) => {
+const getAttribution = () => {
   return '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
 };
 

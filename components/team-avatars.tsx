@@ -14,8 +14,6 @@ interface TeamAvatarsProps {
     size?: "sm" | "md" | "lg";
 }
 
-
-
 export function TeamAvatars({ pessoas, maxVisible = 4, size = "md" }: TeamAvatarsProps) {
     if (!pessoas || pessoas.length === 0) {
         return <span className="text-muted-foreground text-sm">Sem integrantes</span>;
@@ -37,8 +35,8 @@ export function TeamAvatars({ pessoas, maxVisible = 4, size = "md" }: TeamAvatar
 
     return (
         <div className="flex -space-x-2">
-            {pessoas.slice(0, 3).map((pessoa) => (
-                <Avatar key={pessoa.id} className="h-8 w-8 border-2 border-background">
+            {pessoas.slice(0, maxVisible).map((pessoa) => (
+                <Avatar key={pessoa.id} className={`${sizeClasses[size]} border-2 border-background`}>
                     <AvatarImage src={pessoa.avatar} alt={pessoa.nome} />
                     <AvatarFallback>{pessoa.nome.charAt(0)}</AvatarFallback>
                 </Avatar>

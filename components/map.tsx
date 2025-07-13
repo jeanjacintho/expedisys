@@ -174,7 +174,7 @@ export default function Map({ expedicoes = [] }: MapProps) {
         }
       }
     };
-  }, [mounted]);
+  }, [mounted, resolvedTheme]);
 
   // Update tile layer when theme changes
   useEffect(() => {
