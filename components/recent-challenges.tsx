@@ -154,8 +154,8 @@ export function RecentChallenges({ desafios, loading }: RecentChallengesProps) {
         <div className="flex-1 space-y-3">
           {currentDesafios.map((item, idx) => {
             const styles = getRiscoStyles(item.nivel_risco);
-            
-            return (
+
+          return (
               <div key={idx} className={`border rounded-lg p-4 ${styles.bgClass} ${styles.borderClass}`}>
                 <div className="flex items-start gap-3">
                   <div className="flex-shrink-0 mt-1">
@@ -196,8 +196,8 @@ export function RecentChallenges({ desafios, loading }: RecentChallengesProps) {
                   </div>
                 </div>
               </div>
-            );
-          })}
+          );
+        })}
         </div>
 
         {/* Paginação */}

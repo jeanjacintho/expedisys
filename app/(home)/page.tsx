@@ -10,7 +10,6 @@ import { ExpeditionsTable } from "./(components)/expeditions-table";
 import { LastArtefactsFound } from "@/app/(home)/(components)/last-artifacts-found";
 import { RecentChallenges } from "@/components/recent-challenges";
 import { useRecentChallenges } from "@/hooks/use-recent-challenges";
-import { StatsCardSkeleton } from "@/components/stats-card-skeleton";
 import { MapSkeleton } from "@/components/map-skeleton";
 import { ExpeditionsTableSkeleton } from "@/components/expeditions-table-skeleton";
 import { PageSkeleton } from "@/components/page-skeleton";
@@ -65,10 +64,6 @@ export default function HomePage() {
     totalEquipes: 0,
     totalSitios: 0,
     totalPaises: 0
-  });
-  const [periodoAtivo, setPeriodoAtivo] = useState({
-    anoInicio: 0,
-    anoFim: 0
   });
 
   // Usar o hook para buscar desafios recentes
@@ -134,20 +129,6 @@ export default function HomePage() {
           totalSitios: sitiosUnicos.size,
           totalPaises: paisesUnicos.size
         });
-
-        // Calcular período ativo baseado nas datas das expedições
-        if (ativas.length > 0) {
-          const anosInicio = ativas.map(exp => new Date(exp.data_inicio).getFullYear());
-          const anosFim = ativas.map(exp => new Date(exp.data_fim).getFullYear());
-          
-          const anoInicio = Math.min(...anosInicio);
-          const anoFim = Math.max(...anosFim);
-          
-          setPeriodoAtivo({
-            anoInicio,
-            anoFim
-          });
-        }
 
       } catch (error) {
         console.error('Erro ao carregar dados:', error);

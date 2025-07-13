@@ -1,8 +1,11 @@
 "use client";
 
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { MapIcon, GlobeIcon, TrendingUpIcon, UsersIcon } from "lucide-react";
+import { Card } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { 
+  MapPinIcon, 
+  TrendingUpIcon
+} from "lucide-react"
 
 interface Localizacao {
     id: number;
@@ -66,14 +69,14 @@ export function LocationAnalysis({ expedicoes, localizacoes }: LocationAnalysisP
         <Card className="p-6">
             <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold text-foreground">Análise de Localização</h3>
-                <MapIcon className="w-5 h-5 text-muted-foreground" />
+                <MapPinIcon className="w-5 h-5 text-muted-foreground" />
             </div>
 
             <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                     <div className="text-center p-3 bg-muted/30 rounded-lg">
                         <div className="flex items-center justify-center mb-2">
-                            <GlobeIcon className="w-5 h-5 text-foreground" />
+                            <MapPinIcon className="w-5 h-5 text-foreground" />
                         </div>
                         <div className="text-2xl font-bold text-foreground">
                             {totalPaises}

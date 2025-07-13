@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { ApiService } from "@/lib/api";
 import { Card } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
 import { AlertTriangleIcon } from "lucide-react";
 import { InsightsRecommendations } from "@/components/analytics/insights-recommendations";
 
@@ -110,6 +109,12 @@ export default function InsightsPage() {
 
     return (
         <div className="flex flex-col gap-4 md:gap-4">
+            <div>
+                <h1 className="text-2xl font-bold text-foreground">Insights e Recomendações</h1>
+                <p className="text-muted-foreground">
+                    Análise inteligente e recomendações estratégicas para melhorar o desempenho das expedições
+                </p>
+            </div>
             <InsightsRecommendations 
                 expedicoes={data.expedicoes}
                 desafioHasExpedicao={data.desafioHasExpedicao}

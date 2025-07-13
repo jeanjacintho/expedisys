@@ -1,9 +1,10 @@
-import { Button } from "@/components/ui/button"
+"use client"
+
+import { NavUser } from "@/components/nav-user"
 import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
 import { Input } from "./ui/input"
 import { SearchIcon } from "lucide-react"
-import { NavUser } from "./nav-user"
 
 export function SiteHeader() {
   return (

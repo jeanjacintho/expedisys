@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { ApiService } from "@/lib/api";
 import { Card } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
 import { AlertTriangleIcon } from "lucide-react";
 import { ChallengeAnalysis } from "@/components/analytics/challenge-analysis";
 
@@ -98,6 +97,12 @@ export default function ChallengesPage() {
 
     return (
         <div className="flex flex-col gap-4 md:gap-4">
+            <div>
+                <h1 className="text-2xl font-bold text-foreground">Análise de Desafios</h1>
+                <p className="text-muted-foreground">
+                    Análise detalhada dos desafios enfrentados durante as expedições
+                </p>
+            </div>
             <ChallengeAnalysis 
                 desafios={data.desafios} 
                 desafioHasExpedicao={data.desafioHasExpedicao} 

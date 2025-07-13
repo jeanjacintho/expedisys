@@ -1,52 +1,41 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import React from "react";
 import { useRouter } from "next/navigation";
-import { ApiService } from "@/lib/api";
-import {
-    Table,
-    TableHeader,
-    TableBody,
-    TableHead,
-    TableRow,
-    TableCell,
-} from "@/components/ui/table";
-import {
-    Pagination,
-    PaginationContent,
-    PaginationItem,
-} from "@/components/ui/pagination";
-import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card } from "@/components/ui/card";
-import { Loader2Icon, ClockIcon, XIcon, EyeIcon, MoreVertical, FilterIcon, CalendarIcon, PlusIcon, MapPinnedIcon, ChevronsLeft, ChevronLeft, ChevronRight, ChevronsRight, TrendingUpIcon, AlertTriangleIcon, PlayIcon, CheckIcon } from "lucide-react";
-import {
-    Dialog,
-    DialogTrigger,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-    DialogDescription,
-    DialogClose,
-} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
-import { ChevronsUpDownIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Pagination, PaginationContent, PaginationItem } from "@/components/ui/pagination";
+import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
+import { 
+  FilterIcon, 
+  CalendarIcon, 
+  MapPinIcon, 
+  UsersIcon, 
+  AlertTriangleIcon,
+  CheckCircleIcon,
+  ClockIcon,
+  XIcon,
+  MoreVertical,
+  ChevronsLeft,
+  ChevronLeft,
+  ChevronRight,
+  ChevronsRight,
+  ChevronsUpDownIcon
+} from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { type DateRange } from "react-day-picker";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { ApiService } from "@/lib/api";
 import { ExpeditionDetailsModal } from "@/components/expedition-details-modal";
-import { ExpeditionsTableSkeleton } from "@/components/expeditions-table-skeleton";
-import { ExpeditionsFiltersSkeleton } from "@/components/expeditions-filters-skeleton";
-import { ExpeditionsPaginationSkeleton } from "@/components/expeditions-pagination-skeleton";
-import { Skeleton } from "@/components/ui/skeleton";
+
 import { PageSkeleton } from "@/components/page-skeleton";
 import { TeamAvatars } from "@/components/team-avatars";
 import { ImagePreloader } from "@/components/image-preloader";
@@ -90,9 +79,9 @@ function statusToVariant(status: string): "outline" | "default" | "destructive" 
 }
 
 function statusIcon(status: string) {
-    if (status === "Concluída") return <div className="bg-green-500 p-0.5 rounded-full"><CheckIcon className="w-2 h-2 text-white" /></div>;
-    if (status === "Em andamento") return <Loader2Icon className="w-3 h-3 animate-spin" />;
-    if (status === "Em planejamento") return <ClockIcon className="w-3 h-3" />;
+    if (status === "Concluída") return <div className="bg-green-500 p-0.5 rounded-full"><CheckCircleIcon className="w-2 h-2 text-white" /></div>;
+    if (status === "Em andamento") return <div className="bg-blue-500 p-0.5 rounded-full"><ClockIcon className="w-2 h-2 text-white" /></div>;
+    if (status === "Em planejamento") return <div className="bg-yellow-500 p-0.5 rounded-full"><ClockIcon className="w-2 h-2 text-white" /></div>;
     if (status === "Cancelada") return <div className="bg-red-500 p-0.5 rounded-full"><XIcon className="w-2 h-2 text-white" /></div>;
     return null;
 }
@@ -156,8 +145,7 @@ export default function ExpeditionPage() {
     const [expedicoes, setExpedicoes] = useState<Expedicao[]>([]);
     const [page, setPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [selected, setSelected] = useState<Expedicao | null>(null);
-    const [open, setOpen] = useState(false);
+
     const [detailsModalOpen, setDetailsModalOpen] = useState(false);
     const [selectedExpedicao, setSelectedExpedicao] = useState<Expedicao | null>(null);
     const [loading, setLoading] = useState(true);
@@ -200,11 +188,11 @@ export default function ExpeditionPage() {
                 }))
             }));
             
-            const expeds = expedicoesRes.map((exp: any) => ({
+            const expeds = expedicoesRes.map((exp: { id: number; nome: string; data_inicio: string; data_fim: string; equipe_id: number; Localizacao_id: number; Ruina_id: number; status: string }) => ({
                 ...exp,
-                equipe: equipesComPessoas.find((e: any) => e.id === exp.equipe_id) || { id: 0, nome: "-", pessoas: [] },
-                localizacao: localizacoes.find((l: any) => l.id === exp.Localizacao_id) || { pais: "-" },
-                ruina: ruinas.find((r: any) => r.id === exp.Ruina_id) || { 
+                equipe: equipesComPessoas.find((e: { id: number }) => e.id === exp.equipe_id) || { id: 0, nome: "-", pessoas: [] },
+                localizacao: localizacoes.find((l: { id: number }) => l.id === exp.Localizacao_id) || { pais: "-" },
+                ruina: ruinas.find((r: { id: number }) => r.id === exp.Ruina_id) || { 
                     nome: "-", 
                     descricao: "-",
                     latitude: 0,
@@ -310,7 +298,7 @@ export default function ExpeditionPage() {
                     onClick={() => router.push('/expedition/new')}
                     className="flex items-center gap-2"
                 >
-                    <MapPinnedIcon className="h-4 w-4" />
+                    <MapPinIcon className="h-4 w-4" />
                     Nova Expedição
                 </Button>
             </div>
@@ -320,7 +308,7 @@ export default function ExpeditionPage() {
                 <Card className="p-4 gap-2">
                     <div className="text-sm text-muted-foreground flex justify-between">
                         Total de Expedições
-                        <TrendingUpIcon />
+                        <UsersIcon />
                     </div>
                     <div className="text-2xl font-bold text-foreground">
                         {estatisticas.totalExpedicoes}
@@ -332,7 +320,7 @@ export default function ExpeditionPage() {
                 <Card className="p-4 gap-2">
                     <div className="text-sm text-muted-foreground flex justify-between">
                         Em Andamento
-                        <PlayIcon />
+                        <ClockIcon />
                     </div>
                     <div className="text-2xl font-bold text-foreground">
                         {estatisticas.emAndamento}
@@ -344,7 +332,7 @@ export default function ExpeditionPage() {
                 <Card className="p-4 gap-2">
                     <div className="text-sm text-muted-foreground flex justify-between">
                         Concluídas
-                        <CheckIcon />
+                        <CheckCircleIcon />
                     </div>
                     <div className="text-2xl font-bold text-foreground">
                         {estatisticas.concluidas}
@@ -697,11 +685,14 @@ export default function ExpeditionPage() {
                 </div>
             </Card>
             
-            <ExpeditionDetailsModal 
-                expedicao={selectedExpedicao}
-                open={detailsModalOpen}
-                onOpenChange={setDetailsModalOpen}
-            />
+            {/* ExpeditionDetailsModal */}
+            {selectedExpedicao && (
+                <ExpeditionDetailsModal 
+                    expedicao={selectedExpedicao}
+                    open={detailsModalOpen}
+                    onOpenChange={setDetailsModalOpen}
+                />
+            )}
         </div>
     );
 }

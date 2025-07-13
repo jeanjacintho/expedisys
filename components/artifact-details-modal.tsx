@@ -1,27 +1,14 @@
 "use client";
 
-import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-} from "@/components/ui/dialog";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Badge } from "@/components/ui/badge"
+import { Card } from "@/components/ui/card"
 import { 
-    AwardIcon, 
-    CalendarIcon, 
-    DollarSignIcon, 
-    ClockIcon, 
-    InfoIcon, 
-    MapPinIcon, 
-    TargetIcon, 
-    TrendingUpIcon,
-    ShovelIcon,
-    GemIcon,
-    HistoryIcon,
-    AlertTriangleIcon
-} from "lucide-react";
+  UsersIcon, 
+  DollarSignIcon,
+  AwardIcon,
+  CheckCircleIcon
+} from "lucide-react"
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
@@ -110,7 +97,9 @@ interface ArtifactDetailsModalProps {
     artefato: ArtefatoComDetalhes | null;
     open: boolean;
     onOpenChange: (open: boolean) => void;
-    router: any;
+    router: {
+        push: (path: string) => void;
+    };
 }
 
 export function ArtifactDetailsModal({ artefato, open, onOpenChange, router }: ArtifactDetailsModalProps) {
@@ -128,7 +117,7 @@ export function ArtifactDetailsModal({ artefato, open, onOpenChange, router }: A
             >
                 <DialogHeader>
                     <DialogTitle className="text-xl font-semibold flex items-center gap-2">
-                        <GemIcon className="w-5 h-5" />
+                        <UsersIcon className="w-5 h-5" />
                         Detalhes do Artefato
                     </DialogTitle>
                 </DialogHeader>
@@ -140,7 +129,7 @@ export function ArtifactDetailsModal({ artefato, open, onOpenChange, router }: A
                         <Card className="p-4 gap-2">
                             <div className="text-sm text-muted-foreground flex justify-between">
                                 Idade do Artefato
-                                <ClockIcon />
+                                <UsersIcon />
                             </div>
                             <div className="text-2xl font-bold text-foreground">
                                 {calcularIdadeEmPeriodo(artefato.idade_em_anos)}
@@ -166,7 +155,7 @@ export function ArtifactDetailsModal({ artefato, open, onOpenChange, router }: A
                         <Card className="p-4 gap-2">
                             <div className="text-sm text-muted-foreground flex justify-between">
                                 Estado de Conservação
-                                <TrendingUpIcon />
+                                <CheckCircleIcon />
                             </div>
                             <div className="text-2xl font-bold text-foreground">
                                 {artefato.estado_conservacao?.nivel || "N/A"}
@@ -197,14 +186,14 @@ export function ArtifactDetailsModal({ artefato, open, onOpenChange, router }: A
                                 {artefato.nome}
                             </h3>
                             <Badge variant="outline" className="gap-1">
-                                <GemIcon className="w-4 h-4" />
+                                <UsersIcon className="w-4 h-4" />
                                 Artefato Arqueológico
                             </Badge>
                         </div>
                         
                         <div className="bg-muted/50 p-4 rounded-lg">
                             <h4 className="text-sm font-medium text-muted-foreground mb-2 flex items-center gap-1">
-                                <InfoIcon className="w-4 h-4" />
+                                <UsersIcon className="w-4 h-4" />
                                 Informações Básicas
                             </h4>
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -232,7 +221,7 @@ export function ArtifactDetailsModal({ artefato, open, onOpenChange, router }: A
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                         <Card className="p-4">
                             <h4 className="text-sm font-medium text-muted-foreground mb-3 flex items-center gap-1">
-                                <TrendingUpIcon className="w-4 h-4" />
+                                <CheckCircleIcon className="w-4 h-4" />
                                 Estado de Conservação
                             </h4>
                             <div className="space-y-3">
@@ -267,7 +256,7 @@ export function ArtifactDetailsModal({ artefato, open, onOpenChange, router }: A
                     {artefato.expedicao && (
                         <Card className="p-4">
                             <h4 className="text-sm font-medium text-muted-foreground mb-3 flex items-center gap-1">
-                                <ShovelIcon className="w-4 h-4" />
+                                <UsersIcon className="w-4 h-4" />
                                 Expedição de Descoberta
                             </h4>
                             <div className="space-y-3">
@@ -297,7 +286,7 @@ export function ArtifactDetailsModal({ artefato, open, onOpenChange, router }: A
                     {/* Foto do Artefato */}
                     <Card className="p-4">
                         <h4 className="text-sm font-medium text-muted-foreground mb-3 flex items-center gap-1">
-                            <GemIcon className="w-4 h-4" />
+                            <UsersIcon className="w-4 h-4" />
                             Imagem do Artefato
                         </h4>
                         <div className="flex justify-center">

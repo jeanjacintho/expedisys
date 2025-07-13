@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { ApiService } from "@/lib/api";
 import { Card } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
 import { AlertTriangleIcon } from "lucide-react";
 import { TemporalAnalysis } from "@/components/analytics/temporal-analysis";
 
@@ -13,7 +12,6 @@ interface Expedicao {
     status: string;
     data_inicio: string;
     data_fim: string;
-    equipe_id: number;
 }
 
 // Hook personalizado para buscar dados
@@ -89,6 +87,12 @@ export default function TemporalPage() {
 
     return (
         <div className="flex flex-col gap-4 md:gap-4">
+            <div>
+                <h1 className="text-2xl font-bold text-foreground">Análise Temporal</h1>
+                <p className="text-muted-foreground">
+                    Análise temporal e sazonal das expedições ao longo do tempo
+                </p>
+            </div>
             <TemporalAnalysis expedicoes={data.expedicoes} />
         </div>
     );

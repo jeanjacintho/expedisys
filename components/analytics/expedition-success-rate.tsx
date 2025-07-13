@@ -26,8 +26,8 @@ export function ExpeditionSuccessRate({ expedicoes }: ExpeditionSuccessRateProps
     const expedicoesCanceladas = expedicoes.filter(e => e.status === "Cancelada").length;
     const expedicoesPlanejamento = expedicoes.filter(e => e.status === "Em planejamento").length;
 
-    const taxaSucesso = totalExpedicoes > 0 ? (expedicoesConcluidas / totalExpedicoes) * 100 : 0;
-    const taxaAndamento = totalExpedicoes > 0 ? (expedicoesEmAndamento / totalExpedicoes) * 100 : 0;
+    // Calcular taxas de sucesso
+    const taxaConcluida = expedicoes.length > 0 ? (expedicoes.filter(e => e.status === "Concluída").length / expedicoes.length) * 100 : 0
 
     const getStatusIcon = (status: string) => {
         switch (status) {
@@ -50,9 +50,9 @@ export function ExpeditionSuccessRate({ expedicoes }: ExpeditionSuccessRateProps
                 <div>
                     <div className="flex items-center justify-between mb-2">
                         <span className="text-sm font-medium text-foreground">Taxa de Sucesso</span>
-                        <span className="text-sm font-bold text-foreground">{taxaSucesso.toFixed(1)}%</span>
+                        <span className="text-sm font-bold text-foreground">{taxaConcluida.toFixed(1)}%</span>
                     </div>
-                    <Progress value={taxaSucesso} className="h-2" />
+                    <Progress value={taxaConcluida} className="h-2" />
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">

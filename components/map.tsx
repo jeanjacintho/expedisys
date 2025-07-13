@@ -31,37 +31,7 @@ interface MapProps {
   expedicoes?: Expedicao[];
 }
 
-// Create custom primary colored marker icon
-const createCustomIcon = () => {
-  return L.divIcon({
-    className: 'custom-marker',
-    html: `
-      <div style="
-        width: 30px;
-        height: 30px;
-        background: oklch(0.7917 0.1337 73.85);
-        border: 2px solid white;
-        border-radius: 50% 50% 50% 0;
-        transform: rotate(-45deg);
-        box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      ">
-        <div style="
-          width: 8px;
-          height: 8px;
-          background: white;
-          border-radius: 50%;
-          transform: rotate(45deg);
-        "></div>
-      </div>
-    `,
-    iconSize: [30, 30],
-    iconAnchor: [15, 30],
-    popupAnchor: [0, -30]
-  });
-};
+
 
 // Create custom expedition marker icon (primary color)
 const getPrimaryColor = () => {
@@ -128,7 +98,8 @@ export default function Map({ expedicoes = [] }: MapProps) {
   const mapInstance = useRef<L.Map | null>(null);
   const tileLayerRef = useRef<L.TileLayer | null>(null);
   const [mounted, setMounted] = useState(false);
-  const { resolvedTheme } = useTheme ? useTheme() : { resolvedTheme: undefined };
+  const theme = useTheme();
+  const resolvedTheme = theme?.resolvedTheme;
 
   // Ensure component is mounted before accessing theme
   useEffect(() => {
@@ -238,7 +209,7 @@ export default function Map({ expedicoes = [] }: MapProps) {
     // Add markers for expeditions
     expedicoes.forEach((expedicao) => {
       if (expedicao.localizacao?.latitude && expedicao.localizacao?.longitude) {
-        const marker = L.marker(
+        L.marker(
           [expedicao.localizacao.latitude, expedicao.localizacao.longitude], 
           { icon: createExpeditionIcon() }
         )

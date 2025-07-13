@@ -1,9 +1,8 @@
 "use client"
 
-import { MapPinnedIcon, MailIcon, type Icon } from "lucide-react"
+import { MapPinnedIcon } from "lucide-react"
 import { useRouter } from "next/navigation"
 
-import { Button } from "@/components/ui/button"
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -18,7 +17,7 @@ export function NavMain({
   items: {
     title: string
     url: string
-    icon?: any
+    icon?: React.ComponentType<{ className?: string }>
   }[]
 }) {
   const router = useRouter()

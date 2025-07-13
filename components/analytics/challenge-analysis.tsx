@@ -1,8 +1,12 @@
 "use client";
 
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { AlertTriangleIcon, TrendingUpIcon, DollarSignIcon, MapIcon } from "lucide-react";
+import { Card } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { 
+  TrendingUpIcon, 
+  AlertTriangleIcon,
+  DollarSignIcon
+} from "lucide-react"
 
 interface Desafio {
     id: number;

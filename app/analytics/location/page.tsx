@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { ApiService } from "@/lib/api";
 import { Card } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
 import { AlertTriangleIcon } from "lucide-react";
 import { LocationAnalysis } from "@/components/analytics/location-analysis";
 
@@ -100,9 +99,15 @@ export default function LocationPage() {
 
     return (
         <div className="flex flex-col gap-4 md:gap-4">
+            <div>
+                <h1 className="text-2xl font-bold text-foreground">Análise de Localização</h1>
+                <p className="text-muted-foreground">
+                    Análise geográfica e distribuição das expedições por região
+                </p>
+            </div>
             <LocationAnalysis 
-                expedicoes={data.expedicoes} 
-                localizacoes={data.localizacoes} 
+                expedicoes={data.expedicoes}
+                localizacoes={data.localizacoes}
             />
         </div>
     );

@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useTheme } from "next-themes";
 
 // Dynamic import for Leaflet to avoid SSR issues
-let L: any = null;
+let L: typeof import("leaflet") | null = null;
 let leafletLoaded = false;
 
 const loadLeaflet = async () => {
@@ -38,6 +38,7 @@ const getPrimaryColor = () => {
 // Create custom marker icon for ruin location with primary color
 const createRuinMarkerIcon = () => {
   const primary = getPrimaryColor();
+  if (!L) throw new Error("Leaflet not loaded");
   return L.divIcon({
     className: 'ruin-marker',
     html: `
@@ -84,11 +85,11 @@ const getAttribution = (theme: string | undefined) => {
 
 export default function RuinLocationMap({ location }: RuinLocationMapProps) {
   const mapRef = useRef<HTMLDivElement>(null);
-  const mapInstance = useRef<any>(null);
-  const tileLayerRef = useRef<any>(null);
+  const mapInstance = useRef<L.Map | null>(null);
+  const tileLayerRef = useRef<L.TileLayer | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [mounted, setMounted] = useState(false);
-  const { resolvedTheme } = useTheme ? useTheme() : { resolvedTheme: undefined };
+  const resolvedTheme = useTheme().resolvedTheme;
 
   // Ensure component is mounted before accessing theme
   useEffect(() => {
@@ -103,8 +104,9 @@ export default function RuinLocationMap({ location }: RuinLocationMapProps) {
         try {
           const Leaflet = await loadLeaflet();
           
+          if (!Leaflet) throw new Error("Leaflet not loaded");
           // Check if container already has a map
-          if ((mapRef.current as any)._leaflet_id) {
+          if ((mapRef.current as unknown as { _leaflet_id?: number })._leaflet_id) {
             return;
           }
           
@@ -163,7 +165,8 @@ export default function RuinLocationMap({ location }: RuinLocationMapProps) {
           document.head.appendChild(style);
 
           // Add marker for the ruin location
-          const marker = Leaflet.marker(
+           
+          const marker = Leaflet!.marker(
             [location.latitude, location.longitude], 
             { icon: createRuinMarkerIcon() }
           )

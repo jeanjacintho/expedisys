@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import Link from "next/link"
 
 import {
   Sidebar,
@@ -11,7 +12,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { AmphoraIcon, BugIcon, CameraIcon, ChartAreaIcon, ChartNoAxesCombinedIcon, DatabaseIcon, EarthIcon, FileDigitIcon, FileTextIcon, FileType2Icon, HeartIcon, LayoutDashboardIcon, MountainSnowIcon, SettingsIcon, ShovelIcon, UsersRoundIcon, DollarSignIcon, CreditCardIcon, TrendingUpIcon, ReceiptIcon, BarChart3Icon, MapPinnedIcon, AlertTriangleIcon, ClockIcon } from "lucide-react"
+import { ChartAreaIcon, EarthIcon, LayoutDashboardIcon, MountainSnowIcon, SettingsIcon, ShovelIcon, UsersRoundIcon, DollarSignIcon } from "lucide-react"
 import { NavMain } from "./nav-main"
 import { NavSecondary } from "./nav-secondary"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog"
@@ -112,10 +113,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton asChild className="data-[slot=sidebar-menu-button]:!p-1.5">
-              <a href="/">
+              <Link href="/">
                 <MountainSnowIcon/>
                 <span className="text-base font-semibold">ExpediSys.</span>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

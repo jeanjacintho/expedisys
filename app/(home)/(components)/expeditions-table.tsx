@@ -1,10 +1,10 @@
 "use client"
 
-import { useEffect, useState, useMemo } from 'react'
-import { useRouter } from 'next/navigation'
-import { ApiService } from '@/lib/api'
-import { format } from 'date-fns'
-import { ptBR } from 'date-fns/locale'
+import { useState, useEffect, useMemo } from "react"
+import { useRouter } from "next/navigation"
+import { ApiService } from "@/lib/api"
+import { format } from "date-fns"
+import { ptBR } from "date-fns/locale"
 import { type DateRange } from "react-day-picker"
 import {
   Table,
@@ -20,19 +20,30 @@ import {
   PaginationItem,
 } from "@/components/ui/pagination"
 import { Badge } from "@/components/ui/badge"
-import { Loader2Icon, ClockIcon, XIcon, FilterIcon, CalendarIcon, MoreVertical, ChevronsLeft, ChevronLeft, ChevronRight, ChevronsRight, ChevronsUpDownIcon, CheckIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Calendar } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
-import { cn } from "@/lib/utils"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Skeleton } from "@/components/ui/skeleton"
 import { TeamAvatars } from "@/components/team-avatars"
 import { ExpeditionDetailsModal } from "@/components/expedition-details-modal"
 import { ImagePreloader } from "@/components/image-preloader"
+import { 
+  Loader2Icon, 
+  ClockIcon, 
+  XIcon, 
+  CalendarIcon, 
+  MoreVertical, 
+  ChevronsLeft, 
+  ChevronLeft, 
+  ChevronRight, 
+  ChevronsRight, 
+  ChevronsUpDownIcon, 
+  CheckIcon 
+} from "lucide-react"
 
 interface Expedicao {
   id: number
@@ -67,17 +78,6 @@ interface ExpedicaoComDetalhes extends Expedicao {
     longitude?: number
   }
   status: string
-}
-
-function getPageNumbers(current: number, total: number) {
-  const pages = []
-  if (total <= 5) {
-    for (let i = 1; i <= total; i++) pages.push(i)
-    return pages
-  }
-  if (current <= 3) return [1, 2, 3, 4, '...', total]
-  if (current >= total - 2) return [1, '...', total - 3, total - 2, total - 1, total]
-  return [1, '...', current - 1, current, current + 1, '...', total]
 }
 
 function statusToVariant(status: string): "outline" | "default" | "destructive" | "secondary" {
@@ -196,17 +196,17 @@ export function ExpeditionsTable() {
         ]);
 
         // Relacionar pessoas com equipes usando a tabela de relacionamento
-        const equipesComPessoas = equipes.map(equipe => ({
+        const equipesComPessoas = equipes.map((equipe: { id: number; nome: string; lider_id: number }) => ({
           ...equipe,
-          pessoas: pessoas.filter(pessoa => 
-            equipeHasPessoa.some(rel => rel.Equipe_id === equipe.id && rel.Pessoa_id === pessoa.id)
+          pessoas: pessoas.filter((pessoa: { id: number; nome: string; avatar?: string }) => 
+            equipeHasPessoa.some((rel: { Equipe_id: number; Pessoa_id: number }) => rel.Equipe_id === equipe.id && rel.Pessoa_id === pessoa.id)
           )
         }));
 
-        const expedicoesComDetalhes = expedicoesData.map(expedicao => {
-          const equipe = equipesComPessoas.find(e => e.id === expedicao.equipe_id)
-          const localizacao = localizacoes.find(l => l.id === expedicao.Localizacao_id)
-          const ruina = ruinas.find(r => r.id === expedicao.Ruina_id)
+        const expedicoesComDetalhes = expedicoesData.map((expedicao: { id: number; nome: string; data_inicio: string; data_fim: string; equipe_id: number; Localizacao_id: number; Ruina_id: number; status: string }) => {
+          const equipe = equipesComPessoas.find((e: { id: number }) => e.id === expedicao.equipe_id)
+          const localizacao = localizacoes.find((l: { id: number }) => l.id === expedicao.Localizacao_id)
+          const ruina = ruinas.find((r: { id: number }) => r.id === expedicao.Ruina_id)
 
           return {
             ...expedicao,
@@ -217,7 +217,7 @@ export function ExpeditionsTable() {
         })
 
         // Filtrar apenas expedições em andamento (aceita ambas as variações)
-        const expedicoesAtivas = expedicoesComDetalhes.filter(expedicao => 
+        const expedicoesAtivas = expedicoesComDetalhes.filter((expedicao: { status: string }) => 
           expedicao.status === "Em Andamento" || expedicao.status === "Em andamento"
         )
 
@@ -279,7 +279,6 @@ export function ExpeditionsTable() {
   }, [rowsPerPage, searchTerm, statusFilter, paisFilter, equipeFilter, dateRange])
 
   const paginated = filteredExpedicoes.slice((page - 1) * rowsPerPage, page * rowsPerPage)
-  const pageNumbers = getPageNumbers(page, totalPages)
 
   const formatarData = (dataString: string) => {
     try {

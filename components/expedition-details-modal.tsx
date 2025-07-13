@@ -1,14 +1,19 @@
 "use client";
 
-import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-} from "@/components/ui/dialog";
-import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { CheckIcon, Loader2Icon, ClockIcon, XIcon, CalendarIcon, MapPinIcon, UsersIcon, AwardIcon, TargetIcon, InfoIcon, ShovelIcon, TentIcon } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Badge } from "@/components/ui/badge"
+import { Card } from "@/components/ui/card"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { 
+  UsersIcon, 
+  CalendarIcon, 
+  MapPinIcon, 
+  TargetIcon,
+  CheckCircleIcon,
+  ClockIcon,
+  XIcon,
+  InfoIcon
+} from "lucide-react"
 import RuinLocationMap from "./ruin-location-map";
 import {
     Table,
@@ -18,7 +23,6 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { Card, CardContent } from "@/components/ui/card";
 
 interface Expedicao {
     id: number;
@@ -54,8 +58,8 @@ interface Expedicao {
 }
 
 function statusIcon(status: string) {
-    if (status === "Concluída") return <div className="bg-green-500 p-0.5 rounded-full"><CheckIcon className="w-2 h-2 text-white" /></div>;
-    if (status === "Em andamento") return <Loader2Icon className="w-3 h-3 animate-spin" />;
+    if (status === "Concluída") return <div className="bg-green-500 p-0.5 rounded-full"><CheckCircleIcon className="w-2 h-2 text-white" /></div>;
+    if (status === "Em andamento") return <ClockIcon className="w-3 h-3 animate-spin" />;
     if (status === "Em planejamento") return <ClockIcon className="w-3 h-3" />;
     if (status === "Cancelada") return <div className="bg-red-500 p-0.5 rounded-full"><XIcon className="w-2 h-2 text-white" /></div>;
     return null;
@@ -192,7 +196,7 @@ export function ExpeditionDetailsModal({ expedicao, open, onOpenChange }: Expedi
                             <Card className="p-4 gap-2">
                                 <div className="text-sm text-muted-foreground flex justify-between">
                                     Orçamento
-                                    <AwardIcon />
+                                    <TargetIcon />
                                 </div>
                                 <div className="text-2xl font-bold text-foreground">
                                     {formatarValor(expedicao.orcamento)}
@@ -205,7 +209,7 @@ export function ExpeditionDetailsModal({ expedicao, open, onOpenChange }: Expedi
                             <Card className="p-4 gap-2">
                                 <div className="text-sm text-muted-foreground flex justify-between">
                                     Sítio Arqueológico
-                                    <TentIcon />
+                                    <TargetIcon />
                                 </div>
                                 <div className="text-2xl font-bold text-foreground">
                                     {expedicao.ruina.nome}
@@ -259,7 +263,7 @@ export function ExpeditionDetailsModal({ expedicao, open, onOpenChange }: Expedi
                     {isActive && (
                         <Card className="p-4">
                             <h4 className="text-sm font-medium text-muted-foreground mb-3 flex items-center gap-1">
-                                <Loader2Icon className="w-4 h-4" />
+                                <ClockIcon className="w-4 h-4" />
                                 Progresso da Expedição
                             </h4>
                             <ProgressBar progress={progress} />
@@ -291,7 +295,7 @@ export function ExpeditionDetailsModal({ expedicao, open, onOpenChange }: Expedi
 
                         <Card className="p-4">
                             <h4 className="text-sm font-medium text-muted-foreground mb-3 flex items-center gap-1">
-                                <TentIcon className="w-4 h-4" />
+                                <TargetIcon className="w-4 h-4" />
                                 Sítio Arqueológico
                             </h4>
                             <div className="space-y-3">

@@ -1,105 +1,54 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { ApiService } from "@/lib/api";
-import {
-    Table,
-    TableHeader,
-    TableBody,
-    TableHead,
-    TableRow,
-    TableCell,
-} from "@/components/ui/table";
-import {
-    Pagination,
-    PaginationContent,
-    PaginationItem,
-} from "@/components/ui/pagination";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Pagination, PaginationContent, PaginationItem } from "@/components/ui/pagination";
 import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
 import { 
-    Loader2Icon, 
     FilterIcon, 
+    EyeIcon, 
+    PlusIcon, 
     CalendarIcon, 
-    MoreVertical, 
-    ChevronsLeft, 
-    ChevronLeft, 
-    ChevronRight, 
-    ChevronsRight, 
+    MapPinIcon, 
+    UsersIcon, 
+    MoreVertical,
+    ChevronsLeft,
+    ChevronLeft,
+    ChevronRight,
+    ChevronsRight,
     ChevronsUpDownIcon,
-    UsersIcon,
     UserCheckIcon,
-    UserXIcon,
-    AwardIcon,
     TrendingUpIcon,
-    MapPinIcon,
-    ShovelIcon,
-    EyeIcon,
+    AwardIcon,
     EditIcon,
     TrashIcon,
-    PlusIcon,
-    InfoIcon
+    InfoIcon,
+    ShovelIcon
 } from "lucide-react";
-import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-    DialogDescription,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
-import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { type DateRange } from "react-day-picker";
-import { Skeleton } from "@/components/ui/skeleton";
-import { PageSkeleton } from "@/components/page-skeleton";
-import { TeamAvatars } from "@/components/team-avatars";
-import { ImagePreloader } from "@/components/image-preloader";
 import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ApiService } from "@/lib/api";
+import { PageSkeleton } from "@/components/page-skeleton";
+import { ImagePreloader } from "@/components/image-preloader";
+import { TeamAvatars } from "@/components/team-avatars";
 
 // Interfaces
-interface Pessoa {
-    id: number;
-    nome: string;
-    documento: string;
-    telefone: string;
-    data_nascimento: string;
-    email: string;
-    especialidade_id: number;
-    avatar: string;
-}
-
 interface Equipe {
     id: number;
     nome: string;
     lider_id: number;
-}
-
-interface Especialidade {
-    id: number;
-    titulo: string;
-}
-
-interface Expedicao {
-    id: number;
-    nome: string;
-    data_inicio: string;
-    data_fim: string;
-    equipe_id: number;
-    status: string;
-}
-
-interface EquipeHasPessoa {
-    Equipe_id: number;
-    Pessoa_id: number;
 }
 
 interface EquipeComDetalhes extends Equipe {

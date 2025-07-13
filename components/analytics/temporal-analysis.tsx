@@ -1,8 +1,12 @@
 "use client";
 
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { CalendarIcon, ClockIcon, TrendingUpIcon, TrendingDownIcon } from "lucide-react";
+import { Card } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { 
+  CalendarIcon, 
+  TrendingUpIcon, 
+  ClockIcon
+} from "lucide-react"
 
 interface TemporalAnalysisProps {
     expedicoes: Array<{
