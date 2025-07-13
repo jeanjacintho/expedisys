@@ -1,36 +1,141 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ExpediSys - Sistema de Arqueologia
 
-## Getting Started
+Um sistema SaaS para gerenciamento de expedições arqueológicas.
 
-First, run the development server:
+## Funcionalidades
 
+- ✅ Dashboard com navegação lateral
+- ✅ Interface responsiva
+- ✅ Banco de dados local completo com todas as entidades
+- ✅ Sistema de gerenciamento de expedições
+
+## Banco de Dados
+
+O sistema inclui um banco de dados JSON completo com as seguintes entidades:
+
+### Entidades Principais
+- **Especialidades** - Tipos de especialistas (Arqueólogo, Antropólogo, etc.)
+- **Pessoas** - Membros das equipes com suas especialidades
+- **Equipes** - Grupos de trabalho com líderes
+- **Expedições** - Projetos de pesquisa arqueológica
+- **Artefatos** - Objetos encontrados nas expedições
+- **Ruínas** - Sítios arqueológicos
+- **Localizações** - Coordenadas geográficas dos sítios
+
+### Entidades de Suporte
+- **Estados de Conservação** - Condição dos artefatos
+- **Importâncias Históricas** - Valor histórico dos achados
+- **Períodos Históricos** - Épocas históricas
+- **Desafios** - Problemas enfrentados nas expedições
+- **Instituições** - Organizações financiadoras
+- **Financiamentos** - Investimentos nas expedições
+- **Contatos de Emergência** - Contatos dos membros
+
+### Dados de Exemplo
+O banco inclui dados realistas de:
+- **50 Ruínas** (Machu Picchu, Chichen Itza, Pirâmides de Gizé, etc.)
+- **50 Expedições** ativas em diferentes períodos
+- **340 Pessoas** especialistas
+- **50 Equipes** de trabalho
+- **50 Artefatos** encontrados
+- **100 Localizações** em diferentes países
+
+## Como Executar
+
+### 1. Instalar dependências
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Executar o projeto
+```bash
+npm run dev
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+O projeto estará disponível em `http://localhost:3000`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Estrutura do Projeto
 
-## Learn More
+```
+├── app/
+│   ├── (home)/           # Dashboard principal
+│   ├── artifacts/        # Página de artefatos
+│   ├── expedition/       # Página de expedições
+│   ├── analytics/        # Página de análises
+│   ├── teams/           # Página de equipes
+│   └── layout.tsx       # Layout principal
+├── components/
+│   ├── nav-user.tsx     # Componente de usuário no header
+│   ├── app-sidebar.tsx  # Sidebar de navegação
+│   └── ui/              # Componentes UI
+├── lib/
+│   └── api.ts           # Serviço de API para dados
+└── data/
+    └── db.json          # Banco de dados JSON completo
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Tecnologias Utilizadas
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Next.js 15** - Framework React
+- **TypeScript** - Tipagem estática
+- **Tailwind CSS** - Estilização
+- **Lucide React** - Ícones
+- **Radix UI** - Componentes acessíveis
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Funcionalidades do Sistema
 
-## Deploy on Vercel
+### Interface
+- Header com usuário padrão
+- Sidebar responsiva
+- Navegação entre páginas
+- Design moderno e acessível
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Banco de Dados
+- Dados completos de expedições arqueológicas
+- Relacionamentos entre entidades
+- Dados realistas de sítios históricos
+- API service para acesso aos dados
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Uso da API
+
+Para acessar os dados no código:
+
+```typescript
+import { ApiService } from '@/lib/api'
+
+// Buscar dados
+const expedicoes = await ApiService.getExpedicoes()
+const artefatos = await ApiService.getArtefatos()
+const pessoas = await ApiService.getPessoas()
+
+// Buscar dados com relacionamentos
+const expedicaoDetalhada = await ApiService.getExpedicaoComDetalhes(1)
+const artefatoDetalhado = await ApiService.getArtefatoComDetalhes(1)
+```
+
+## Desenvolvimento
+
+Para adicionar novos dados, edite o arquivo `data/db.json`:
+
+```json
+{
+  "Expedicao": [
+    {
+      "id": 51,
+      "nome": "Nova Expedição",
+      "data_inicio": "2024-11-01T08:00:00Z",
+      "data_fim": "2024-12-31T18:00:00Z",
+      "equipe_id": 1,
+      "Localizacao_id": 1,
+      "Ruina_id": 1
+    }
+  ]
+}
+```
+
+## Scripts Disponíveis
+
+- `npm run dev` - Executa o projeto em modo desenvolvimento
+- `npm run build` - Build para produção
+- `npm run start` - Executa o build de produção
+- `npm run lint` - Executa o linter
