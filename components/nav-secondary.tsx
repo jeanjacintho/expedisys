@@ -39,7 +39,7 @@ export function NavSecondary({
 
   return (
     <SidebarGroup {...props}>
-      <SidebarGroupLabel>Financeiro</SidebarGroupLabel>
+      <SidebarGroupLabel>Relatórios</SidebarGroupLabel>
       <SidebarGroupContent>
         <SidebarMenu>
           {items.map((item) => (

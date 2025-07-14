@@ -13,7 +13,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "Expedisys",
-  description: "A saas for arqueology",
+  description: "sistem for archeology",
 };
 
 export default function RootLayout({
