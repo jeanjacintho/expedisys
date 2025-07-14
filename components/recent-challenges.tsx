@@ -2,11 +2,12 @@
 
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { AlertTriangle, MapPinIcon, UsersIcon, CalendarIcon } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Pagination, PaginationContent, PaginationItem } from "@/components/ui/pagination";
+import { AlertTriangle, MapPinIcon, UsersIcon, CalendarIcon, ChevronsLeft, ChevronLeft, ChevronRight, ChevronsRight } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 
 interface Desafio {
   desafio: string;
@@ -25,31 +26,19 @@ interface RecentChallengesProps {
 const ITEMS_PER_PAGE = 3;
 
 export function RecentChallenges({ desafios, loading }: RecentChallengesProps) {
-  const [currentPage, setCurrentPage] = useState(0);
+  const [page, setPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(3);
 
   // Calcular dados de paginação
-  const totalPages = Math.ceil(desafios.length / ITEMS_PER_PAGE);
-  const startIndex = currentPage * ITEMS_PER_PAGE;
-  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const totalPages = Math.ceil(desafios.length / rowsPerPage);
+  const startIndex = (page - 1) * rowsPerPage;
+  const endIndex = startIndex + rowsPerPage;
   const currentDesafios = desafios.slice(startIndex, endIndex);
-
-  // Atualizar página quando os dados mudarem
-  if (currentPage >= totalPages && totalPages > 0) {
-    setCurrentPage(0);
-  }
 
   // Reset para primeira página quando os dados mudam
   useEffect(() => {
-    setCurrentPage(0);
+    setPage(1);
   }, [desafios.length]);
-
-  const handlePreviousPage = () => {
-    setCurrentPage(prev => Math.max(0, prev - 1));
-  };
-
-  const handleNextPage = () => {
-    setCurrentPage(prev => Math.min(totalPages - 1, prev + 1));
-  };
 
   const getRiscoStyles = (nivel: string) => {
     switch (nivel) {
@@ -150,7 +139,7 @@ export function RecentChallenges({ desafios, loading }: RecentChallengesProps) {
     <Card className="p-4 h-full gap-4">
       <h3 className="text-lg font-semibold text-foreground">Desafios recentes encontrados nas expedições</h3>
       
-      <div className="flex flex-col h-full">
+      <div className="flex flex-col h-full space-y-4">
         <div className="flex-1 space-y-3">
           {currentDesafios.map((item, idx) => {
             const styles = getRiscoStyles(item.nivel_risco);
@@ -201,36 +190,75 @@ export function RecentChallenges({ desafios, loading }: RecentChallengesProps) {
         </div>
 
         {/* Paginação */}
-        {totalPages > 1 && (
-          <div className="flex items-center justify-between pt-4">
-            <div className="text-xs text-muted-foreground">
-              {startIndex + 1}-{Math.min(endIndex, desafios.length)} de {desafios.length}
+        <div className="">
+          <Pagination className="justify-between">
+            <div className="flex items-center space-x-4">
+              <span className="text-sm">Rows per page:</span>
+              <Select value={rowsPerPage.toString()} onValueChange={(value) => setRowsPerPage(Number(value))}>
+                <SelectTrigger className="w-16">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="3">3</SelectItem>
+                  <SelectItem value="5">5</SelectItem>
+                  <SelectItem value="8">8</SelectItem>
+                  <SelectItem value="10">10</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
-            <div className="flex items-center gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handlePreviousPage}
-                disabled={currentPage === 0}
-                className="h-6 w-6 p-0"
-              >
-                <ChevronLeftIcon className="h-3 w-3" />
-              </Button>
-              <span className="text-xs text-muted-foreground px-2">
-                {currentPage + 1} / {totalPages}
+            <div className="flex items-center space-x-2">
+              <span className="text-sm text-muted-foreground">
+                Página {page} de {totalPages}
               </span>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleNextPage}
-                disabled={currentPage === totalPages - 1}
-                className="h-6 w-6 p-0"
-              >
-                <ChevronRightIcon className="h-3 w-3" />
-              </Button>
+              <PaginationContent>
+                <PaginationItem>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => setPage(1)}
+                    disabled={page === 1}
+                    aria-label="Primeira página"
+                  >
+                    <ChevronsLeft className="w-4 h-4" />
+                  </Button>
+                </PaginationItem>
+                <PaginationItem>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => setPage(p => Math.max(1, p - 1))}
+                    disabled={page === 1}
+                    aria-label="Página anterior"
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                  </Button>
+                </PaginationItem>
+                <PaginationItem>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => setPage(p => Math.min(totalPages, p + 1))}
+                    disabled={page === totalPages}
+                    aria-label="Próxima página"
+                  >
+                    <ChevronRight className="w-4 h-4" />
+                  </Button>
+                </PaginationItem>
+                <PaginationItem>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => setPage(totalPages)}
+                    disabled={page === totalPages}
+                    aria-label="Última página"
+                  >
+                    <ChevronsRight className="w-4 h-4" />
+                  </Button>
+                </PaginationItem>
+              </PaginationContent>
             </div>
-          </div>
-        )}
+          </Pagination>
+        </div>
       </div>
     </Card>
   );

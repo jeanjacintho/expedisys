@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Pagination, PaginationContent, PaginationItem } from "@/components/ui/pagination";
 import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { Card } from "@/components/ui/card";
 import { 
     FilterIcon, 
@@ -78,24 +79,7 @@ interface EquipeComDetalhes extends Equipe {
 }
 
 // Componentes auxiliares
-function StatusExpedicaoBadge({ status }: { status: string }) {
-    const getColor = (status: string) => {
-        switch (status.toLowerCase()) {
-            case "em andamento": return "bg-blue-500";
-            case "concluída": return "bg-green-500";
-            case "em planejamento": return "bg-yellow-500";
-            case "cancelada": return "bg-red-500";
-            default: return "bg-gray-500";
-        }
-    };
 
-    return (
-        <Badge variant="outline">
-            <div className={`w-2 h-2 rounded-full mr-2 ${getColor(status)}`} />
-            {status}
-        </Badge>
-    );
-}
 
 function calcularIdade(dataNascimento: string): number {
     const hoje = new Date();
@@ -318,62 +302,62 @@ export default function TeamsPage() {
             {/* Cards de Estatísticas */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                 <Card className="p-4 gap-2">
-                    <div className="text-sm text-muted-foreground flex justify-between">
+                    <div className="text-sm text-foreground flex justify-between font-medium">
                         Total de Equipes
-                        <UsersIcon />
+                        <UsersIcon className="w-4 h-4 text-primary" />
                     </div>
                     <div className="text-2xl font-bold text-foreground">
                         {estatisticas.totalEquipes}
                     </div>
-                    <div className="text-xs text-muted-foreground">
+                    <div className="text-xs text-foreground">
                         equipes cadastradas
                     </div>
                 </Card>
                 <Card className="p-4 gap-2">
-                    <div className="text-sm text-muted-foreground flex justify-between">
+                    <div className="text-sm text-foreground flex justify-between font-medium">
                         Total de Membros
-                        <UserCheckIcon />
+                        <UserCheckIcon className="w-4 h-4 text-primary" />
                     </div>
                     <div className="text-2xl font-bold text-foreground">
                         {estatisticas.totalPessoas}
                     </div>
-                    <div className="text-xs text-muted-foreground">
+                    <div className="text-xs text-foreground">
                         membros ativos
                     </div>
                 </Card>
                 <Card className="p-4 gap-2">
-                    <div className="text-sm text-muted-foreground flex justify-between">
+                    <div className="text-sm text-foreground flex justify-between font-medium">
                         Equipes Ativas
-                        <TrendingUpIcon />
+                        <TrendingUpIcon className="w-4 h-4 text-primary" />
                     </div>
                     <div className="text-2xl font-bold text-foreground">
                         {estatisticas.equipesAtivas}
                     </div>
-                    <div className="text-xs text-muted-foreground">
+                    <div className="text-xs text-foreground">
                         em expedições ativas
                     </div>
                 </Card>
                 <Card className="p-4 gap-2">
-                    <div className="text-sm text-muted-foreground flex justify-between">
+                    <div className="text-sm text-foreground flex justify-between font-medium">
                         Expedições Ativas
-                        <MapPinIcon />
+                        <MapPinIcon className="w-4 h-4 text-primary" />
                     </div>
                     <div className="text-2xl font-bold text-foreground">
                         {estatisticas.expedicoesAtivas}
                     </div>
-                    <div className="text-xs text-muted-foreground">
+                    <div className="text-xs text-foreground">
                         expedições em andamento
                     </div>
                 </Card>
                 <Card className="p-4 gap-2">
-                    <div className="text-sm text-muted-foreground flex justify-between">
+                    <div className="text-sm text-foreground flex justify-between font-medium">
                         Idade Média
-                        <AwardIcon />
+                        <AwardIcon className="w-4 h-4 text-primary" />
                     </div>
                     <div className="text-2xl font-bold text-foreground">
                         {estatisticas.mediaIdade} anos
                     </div>
-                    <div className="text-xs text-muted-foreground">
+                    <div className="text-xs text-foreground">
                         idade média dos membros
                     </div>
                 </Card>
@@ -544,25 +528,25 @@ export default function TeamsPage() {
                         <Table>
                             <TableHeader>
                                 <TableRow>
-                                    <TableHead></TableHead>
-                                    <TableHead>Equipe</TableHead>
-                                    <TableHead>Líder</TableHead>
-                                    <TableHead>Membros</TableHead>
-                                    <TableHead>Especialidades</TableHead>
-                                    <TableHead>Expedições Ativas</TableHead>
-                                    <TableHead>Última Atividade</TableHead>
+                                    <TableHead className="w-4"></TableHead>
+                                    <TableHead className="text-foreground font-medium">Equipe</TableHead>
+                                    <TableHead className="text-foreground font-medium">Líder</TableHead>
+                                    <TableHead className="text-foreground font-medium">Membros</TableHead>
+                                    <TableHead className="text-foreground font-medium">Especialidades</TableHead>
+                                    <TableHead className="text-foreground font-medium">Expedições Ativas</TableHead>
+                                    <TableHead className="text-foreground font-medium">Última Atividade</TableHead>
                                     <TableHead></TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
                                 {paginated.map((equipe) => (
-                                    <TableRow key={equipe.id}>
+                                    <TableRow key={equipe.id} className="hover:bg-muted/50">
                                         <TableCell></TableCell>
                                         <TableCell>
                                             <div className="flex flex-col gap-1">
-                                                <span className="font-medium">{equipe.nome}</span>
-                                                <span className="text-sm text-muted-foreground">
-                                                    {equipe.pessoas?.length || 0} membros
+                                                <span className="text-foreground font-medium">{equipe.nome}</span>
+                                                <span className="text-foreground text-xs">
+                                                    {equipe.pessoas?.length || 0} membros • ID: {equipe.id}
                                                 </span>
                                             </div>
                                         </TableCell>
@@ -575,8 +559,8 @@ export default function TeamsPage() {
                                                     </AvatarFallback>
                                                 </Avatar>
                                                 <div className="flex flex-col">
-                                                    <span className="text-sm font-medium">{equipe.lider?.nome || "Não definido"}</span>
-                                                    <span className="text-xs text-muted-foreground">{equipe.lider?.especialidade}</span>
+                                                    <span className="text-foreground font-medium">{equipe.lider?.nome || "Não definido"}</span>
+                                                    <span className="text-foreground text-xs">{equipe.lider?.especialidade}</span>
                                                 </div>
                                             </div>
                                         </TableCell>
@@ -599,21 +583,21 @@ export default function TeamsPage() {
                                         </TableCell>
                                         <TableCell>
                                             <div className="flex items-center gap-2">
-                                                <span className="text-sm font-medium">
+                                                <span className="text-foreground font-medium">
                                                     {equipe.expedicoes?.filter(exp => exp.status.toLowerCase().includes('andamento')).length || 0}
                                                 </span>
-                                                <span className="text-xs text-muted-foreground">
+                                                <span className="text-foreground text-xs">
                                                     expedições ativas
                                                 </span>
                                             </div>
                                         </TableCell>
                                         <TableCell>
                                             {equipe.expedicoes && equipe.expedicoes.length > 0 ? (
-                                                <span className="text-sm text-muted-foreground">
+                                                <span className="text-foreground text-xs">
                                                     {formatarData(equipe.expedicoes[equipe.expedicoes.length - 1].data_inicio)}
                                                 </span>
                                             ) : (
-                                                <span className="text-sm text-muted-foreground">Nenhuma expedição</span>
+                                                <span className="text-foreground text-xs">Nenhuma expedição</span>
                                             )}
                                         </TableCell>
                                         <TableCell>
@@ -657,10 +641,9 @@ export default function TeamsPage() {
                     </div>
 
                     {/* Paginação */}
-                    <div className="">
-                        <Pagination className="justify-between">
+                    <div className="flex items-center justify-between">
                             <div className="flex items-center space-x-4">
-                                <span className="text-sm">Rows per page:</span>
+                            <span className="text-foreground text-sm font-medium">Linhas por página:</span>
                                 <Select value={rowsPerPage.toString()} onValueChange={(value) => setRowsPerPage(Number(value))}>
                                     <SelectTrigger className="w-16">
                                         <SelectValue />
@@ -673,12 +656,12 @@ export default function TeamsPage() {
                                         <SelectItem value="50">50</SelectItem>
                                     </SelectContent>
                                 </Select>
-                                <span className="text-sm">
-                                    Showing {filteredEquipes.length > 0 ? ((page - 1) * rowsPerPage) + 1 : 0} to {Math.min(page * rowsPerPage, filteredEquipes.length)} of {filteredEquipes.length} results
+                            <span className="text-foreground text-sm">
+                                Mostrando {filteredEquipes.length > 0 ? ((page - 1) * rowsPerPage) + 1 : 0} a {Math.min(page * rowsPerPage, filteredEquipes.length)} de {filteredEquipes.length} resultados
                                 </span>
                             </div>
                             <div className="flex items-center space-x-2">
-                                <span className="text-sm text-muted-foreground">
+                            <span className="text-foreground text-sm font-medium">
                                     Página {page} de {totalPages}
                                 </span>
                                 <PaginationContent>
@@ -689,6 +672,7 @@ export default function TeamsPage() {
                                             onClick={() => setPage(1)}
                                             disabled={page === 1}
                                             aria-label="Primeira página"
+                                        className="w-8 h-8"
                                         >
                                             <ChevronsLeft className="w-4 h-4" />
                                         </Button>
@@ -700,6 +684,7 @@ export default function TeamsPage() {
                                             onClick={() => setPage(p => Math.max(1, p - 1))}
                                             disabled={page === 1}
                                             aria-label="Página anterior"
+                                        className="w-8 h-8"
                                         >
                                             <ChevronLeft className="w-4 h-4" />
                                         </Button>
@@ -711,6 +696,7 @@ export default function TeamsPage() {
                                             onClick={() => setPage(p => Math.min(totalPages, p + 1))}
                                             disabled={page === totalPages}
                                             aria-label="Próxima página"
+                                        className="w-8 h-8"
                                         >
                                             <ChevronRight className="w-4 h-4" />
                                         </Button>
@@ -722,13 +708,13 @@ export default function TeamsPage() {
                                             onClick={() => setPage(totalPages)}
                                             disabled={page === totalPages}
                                             aria-label="Última página"
+                                        className="w-8 h-8"
                                         >
                                             <ChevronsRight className="w-4 h-4" />
                                         </Button>
                                     </PaginationItem>
                                 </PaginationContent>
                             </div>
-                        </Pagination>
                     </div>
                 </div>
             </Card>
@@ -929,7 +915,7 @@ export default function TeamsPage() {
                                                     {formatarData(expedicao.data_inicio)} - {formatarData(expedicao.data_fim)}
                                                 </p>
                                             </div>
-                                            <StatusExpedicaoBadge status={expedicao.status} />
+                                                                                            <StatusBadge status={expedicao.status} />
                                         </div>
                                     ))}
                                 </div>

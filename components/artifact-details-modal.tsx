@@ -3,6 +3,8 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Badge } from "@/components/ui/badge"
 import { Card } from "@/components/ui/card"
+import { ConservationStatusBadge } from "@/components/ui/conservation-status-badge";
+import { HistoricalImportanceBadge } from "@/components/ui/historical-importance-badge";
 import { 
   UsersIcon, 
   DollarSignIcon,
@@ -37,33 +39,7 @@ interface ArtefatoComDetalhes {
     };
 }
 
-function EstadoConservacaoBadge({ nivel }: { nivel: string }) {
-    const getColor = (nivel: string) => {
-        switch (nivel) {
-            case "Excelente": return "bg-green-500";
-            case "Bom": return "bg-blue-500";
-            case "Regular": return "bg-yellow-500";
-            case "Ruim": return "bg-orange-500";
-            case "Crítico": return "bg-red-500";
-            default: return "bg-gray-500";
-        }
-    };
 
-    return (
-        <Badge variant="outline">
-            <div className={`w-2 h-2 rounded-full mr-2 ${getColor(nivel)}`} />
-            {nivel}
-        </Badge>
-    );
-}
-
-function ImportanciaHistoricaBadge({ descricao }: { descricao: string }) {
-    return (
-        <Badge variant="outline">
-            {descricao}
-        </Badge>
-    );
-}
 
 function formatarData(dataString: string) {
     try {
@@ -226,7 +202,7 @@ export function ArtifactDetailsModal({ artefato, open, onOpenChange, router }: A
                             </h4>
                             <div className="space-y-3">
                                 <div>
-                                    <EstadoConservacaoBadge nivel={artefato.estado_conservacao?.nivel || "N/A"} />
+                                    <ConservationStatusBadge nivel={artefato.estado_conservacao?.nivel || "N/A"} />
                                 </div>
                                 <div className="text-sm text-muted-foreground">
                                     <p>O artefato está em estado {artefato.estado_conservacao?.nivel?.toLowerCase() || "não informado"}.</p>
@@ -242,7 +218,7 @@ export function ArtifactDetailsModal({ artefato, open, onOpenChange, router }: A
                             </h4>
                             <div className="space-y-3">
                                 <div>
-                                    <ImportanciaHistoricaBadge descricao={artefato.importancia_historica?.descricao || "N/A"} />
+                                    <HistoricalImportanceBadge descricao={artefato.importancia_historica?.descricao || "N/A"} />
                                 </div>
                                 <div className="text-sm text-muted-foreground">
                                     <p>Classificado como {artefato.importancia_historica?.descricao?.toLowerCase() || "não informado"}.</p>

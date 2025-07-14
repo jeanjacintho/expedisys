@@ -10,6 +10,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Pagination, PaginationContent, PaginationItem } from "@/components/ui/pagination";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
+import { ConservationStatusBadge } from "@/components/ui/conservation-status-badge";
+import { HistoricalImportanceBadge } from "@/components/ui/historical-importance-badge";
 import { 
     FilterIcon, 
     CalendarIcon, 
@@ -65,33 +67,6 @@ interface ArtefatoComDetalhes extends Artefato {
 }
 
 // Componentes auxiliares
-function EstadoConservacaoBadge({ nivel }: { nivel: string }) {
-    const getColor = (nivel: string) => {
-        switch (nivel) {
-            case "Excelente": return "bg-green-500";
-            case "Bom": return "bg-blue-500";
-            case "Regular": return "bg-yellow-500";
-            case "Ruim": return "bg-orange-500";
-            case "Crítico": return "bg-red-500";
-            default: return "bg-gray-500";
-        }
-    };
-
-    return (
-        <Badge variant="outline">
-            <div className={`w-2 h-2 rounded-full mr-2 ${getColor(nivel)}`} />
-            {nivel}
-        </Badge>
-    );
-}
-
-function ImportanciaHistoricaBadge({ descricao }: { descricao: string }) {
-    return (
-        <Badge variant="outline">
-            {descricao}
-        </Badge>
-    );
-}
 
 
 
@@ -295,66 +270,66 @@ export default function ArtifactsPage() {
         <div className="flex flex-col gap-4 md:gap-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                 <Card className="p-4 gap-2">
-                    <div className="text-sm text-muted-foreground flex justify-between">
+                    <div className="text-sm text-foreground flex justify-between font-medium">
                         Total de Artefatos
-                        <AwardIcon />
+                        <AwardIcon className="w-4 h-4 text-primary" />
                     </div>
                     <div className="text-2xl font-bold text-foreground">
                         {estatisticas.totalArtefatos}
                     </div>
-                    <div className="text-xs text-muted-foreground">
+                    <div className="text-xs text-foreground">
                         {`${estatisticas.totalArtefatos} artefatos catalogados`}
                     </div>
                 </Card>
 
                 <Card className="p-4 gap-2">
-                    <div className="text-sm text-muted-foreground flex justify-between">
+                    <div className="text-sm text-foreground flex justify-between font-medium">
                         Valor Total
-                        <DollarSignIcon />
+                        <DollarSignIcon className="w-4 h-4 text-primary" />
                     </div>
                     <div className="text-2xl font-bold text-foreground">
                         {formatarValor(estatisticas.totalValor)}
                     </div>
-                    <div className="text-xs text-muted-foreground">
+                    <div className="text-xs text-foreground">
                         {`Valor total estimado`}
                     </div>
                 </Card>
 
                 <Card className="p-4 gap-2">
-                    <div className="text-sm text-muted-foreground flex justify-between">
+                    <div className="text-sm text-foreground flex justify-between font-medium">
                         Idade Média
-                        <ClockIcon />
+                        <ClockIcon className="w-4 h-4 text-primary" />
                     </div>
                     <div className="text-2xl font-bold text-foreground">
                         {estatisticas.mediaIdade.toLocaleString()} anos
                     </div>
-                    <div className="text-xs text-muted-foreground">
+                    <div className="text-xs text-foreground">
                         {`Idade média dos artefatos`}
                     </div>
                 </Card>
 
                 <Card className="p-4 gap-2">
-                    <div className="text-sm text-muted-foreground flex justify-between">
+                    <div className="text-sm text-foreground flex justify-between font-medium">
                         Excelente Estado
-                        <TrendingUpIcon />
+                        <TrendingUpIcon className="w-4 h-4 text-primary" />
                     </div>
                     <div className="text-2xl font-bold text-foreground">
                         {estatisticas.artefatosExcelentes}
                     </div>
-                    <div className="text-xs text-muted-foreground">
+                    <div className="text-xs text-foreground">
                         {`${estatisticas.artefatosExcelentes} em excelente estado`}
                     </div>
                 </Card>
 
                 <Card className="p-4 gap-2">
-                    <div className="text-sm text-muted-foreground flex justify-between">
+                    <div className="text-sm text-foreground flex justify-between font-medium">
                         Patrimônio Mundial
-                        <AwardIcon />
+                        <AwardIcon className="w-4 h-4 text-primary" />
                     </div>
                     <div className="text-2xl font-bold text-foreground">
                         {estatisticas.patrimonioMundial}
                     </div>
-                    <div className="text-xs text-muted-foreground">
+                    <div className="text-xs text-foreground">
                         {`${estatisticas.patrimonioMundial} de patrimônio mundial`}
                     </div>
                 </Card>
@@ -575,36 +550,51 @@ export default function ArtifactsPage() {
                         <Table>
                             <TableHeader>
                                 <TableRow>
-                                    <TableHead></TableHead>
-                                    <TableHead>Nome</TableHead>
-                                    <TableHead>Material</TableHead>
-                                    <TableHead>Idade</TableHead>
-                                    <TableHead>Valor</TableHead>
-                                    <TableHead>Estado</TableHead>
-                                    <TableHead>Importância</TableHead>
-                                    <TableHead>Data Encontrado</TableHead>
+                                    <TableHead className="w-4"></TableHead>
+                                    <TableHead className="text-foreground font-medium">Nome</TableHead>
+                                    <TableHead className="text-foreground font-medium">Material</TableHead>
+                                    <TableHead className="text-foreground font-medium">Idade</TableHead>
+                                    <TableHead className="text-foreground font-medium">Valor</TableHead>
+                                    <TableHead className="text-foreground font-medium">Estado</TableHead>
+                                    <TableHead className="text-foreground font-medium">Importância</TableHead>
+                                    <TableHead className="text-foreground font-medium">Data Encontrado</TableHead>
                                     <TableHead></TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
                                 {paginated.map((artefato) => (
-                                    <TableRow key={artefato.id}>
+                                    <TableRow key={artefato.id} className="hover:bg-muted/50">
                                         <TableCell></TableCell>
-                                        <TableCell className="font-medium max-w-[200px] truncate">
-                                            {artefato.nome}
-                                        </TableCell>
-                                        <TableCell>{artefato.material}</TableCell>
-                                        <TableCell>{artefato.idade_em_anos.toLocaleString()} anos</TableCell>
-                                        <TableCell className="font-medium">
-                                            {formatarValor(artefato.valor_estimado)}
+                                        <TableCell>
+                                            <div className="flex flex-col gap-1">
+                                                <span className="text-foreground font-medium max-w-[200px] truncate">
+                                                    {artefato.nome}
+                                                </span>
+                                                <span className="text-foreground text-xs">ID: {artefato.id}</span>
+                                            </div>
                                         </TableCell>
                                         <TableCell>
-                                            <EstadoConservacaoBadge nivel={artefato.estado_conservacao?.nivel || "N/A"} />
+                                            <span className="text-foreground">{artefato.material}</span>
                                         </TableCell>
                                         <TableCell>
-                                            <ImportanciaHistoricaBadge descricao={artefato.importancia_historica?.descricao || "N/A"} />
+                                            <span className="text-foreground font-medium">
+                                                {artefato.idade_em_anos.toLocaleString()} anos
+                                            </span>
                                         </TableCell>
-                                        <TableCell>{formatarData(artefato.data_encontrado)}</TableCell>
+                                        <TableCell>
+                                            <span className="text-foreground font-medium">
+                                                {formatarValor(artefato.valor_estimado)}
+                                            </span>
+                                        </TableCell>
+                                        <TableCell>
+                                            <ConservationStatusBadge nivel={artefato.estado_conservacao?.nivel || "N/A"} />
+                                        </TableCell>
+                                        <TableCell>
+                                            <HistoricalImportanceBadge descricao={artefato.importancia_historica?.descricao || "N/A"} />
+                                        </TableCell>
+                                        <TableCell>
+                                            <span className="text-foreground">{formatarData(artefato.data_encontrado)}</span>
+                                        </TableCell>
                                         <TableCell>
                                             <DropdownMenu>
                                                 <DropdownMenuTrigger asChild>
@@ -646,78 +636,80 @@ export default function ArtifactsPage() {
                     </div>
 
                     {/* Paginação */}
-                    <div className="">
-                        <Pagination className="justify-between">
-                            <div className="flex items-center space-x-4">
-                                <span className="text-sm">Rows per page:</span>
-                                <Select value={rowsPerPage.toString()} onValueChange={(value) => setRowsPerPage(Number(value))}>
-                                    <SelectTrigger className="w-16">
-                                        <SelectValue />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="5">5</SelectItem>
-                                        <SelectItem value="10">10</SelectItem>
-                                        <SelectItem value="15">15</SelectItem>
-                                        <SelectItem value="20">20</SelectItem>
-                                        <SelectItem value="50">50</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                                <span className="text-sm">
-                                    Showing {filteredArtefatos.length > 0 ? ((page - 1) * rowsPerPage) + 1 : 0} to {Math.min(page * rowsPerPage, filteredArtefatos.length)} of {filteredArtefatos.length} results
-                                </span>
-                            </div>
-                            <div className="flex items-center space-x-2">
-                                <span className="text-sm text-muted-foreground">
-                                    Página {page} de {totalPages}
-                                </span>
-                                <PaginationContent>
-                                    <PaginationItem>
-                                        <Button
-                                            variant="outline"
-                                            size="icon"
-                                            onClick={() => setPage(1)}
-                                            disabled={page === 1}
-                                            aria-label="Primeira página"
-                                        >
-                                            <ChevronsLeft className="w-4 h-4" />
-                                        </Button>
-                                    </PaginationItem>
-                                    <PaginationItem>
-                                        <Button
-                                            variant="outline"
-                                            size="icon"
-                                            onClick={() => setPage(p => Math.max(1, p - 1))}
-                                            disabled={page === 1}
-                                            aria-label="Página anterior"
-                                        >
-                                            <ChevronLeft className="w-4 h-4" />
-                                        </Button>
-                                    </PaginationItem>
-                                    <PaginationItem>
-                                        <Button
-                                            variant="outline"
-                                            size="icon"
-                                            onClick={() => setPage(p => Math.min(totalPages, p + 1))}
-                                            disabled={page === totalPages}
-                                            aria-label="Próxima página"
-                                        >
-                                            <ChevronRight className="w-4 h-4" />
-                                        </Button>
-                                    </PaginationItem>
-                                    <PaginationItem>
-                                        <Button
-                                            variant="outline"
-                                            size="icon"
-                                            onClick={() => setPage(totalPages)}
-                                            disabled={page === totalPages}
-                                            aria-label="Última página"
-                                        >
-                                            <ChevronsRight className="w-4 h-4" />
-                                        </Button>
-                                    </PaginationItem>
-                                </PaginationContent>
-                            </div>
-                        </Pagination>
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-4">
+                            <span className="text-foreground text-sm font-medium">Linhas por página:</span>
+                            <Select value={rowsPerPage.toString()} onValueChange={(value) => setRowsPerPage(Number(value))}>
+                                <SelectTrigger className="w-16">
+                                    <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="5">5</SelectItem>
+                                    <SelectItem value="10">10</SelectItem>
+                                    <SelectItem value="15">15</SelectItem>
+                                    <SelectItem value="20">20</SelectItem>
+                                    <SelectItem value="50">50</SelectItem>
+                                </SelectContent>
+                            </Select>
+                            <span className="text-foreground text-sm">
+                                Mostrando {filteredArtefatos.length > 0 ? ((page - 1) * rowsPerPage) + 1 : 0} a {Math.min(page * rowsPerPage, filteredArtefatos.length)} de {filteredArtefatos.length} resultados
+                            </span>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                            <span className="text-foreground text-sm font-medium">
+                                Página {page} de {totalPages}
+                            </span>
+                            <PaginationContent>
+                                <PaginationItem>
+                                    <Button
+                                        variant="outline"
+                                        size="icon"
+                                        onClick={() => setPage(1)}
+                                        disabled={page === 1}
+                                        aria-label="Primeira página"
+                                        className="w-8 h-8"
+                                    >
+                                        <ChevronsLeft className="w-4 h-4" />
+                                    </Button>
+                                </PaginationItem>
+                                <PaginationItem>
+                                    <Button
+                                        variant="outline"
+                                        size="icon"
+                                        onClick={() => setPage(p => Math.max(1, p - 1))}
+                                        disabled={page === 1}
+                                        aria-label="Página anterior"
+                                        className="w-8 h-8"
+                                    >
+                                        <ChevronLeft className="w-4 h-4" />
+                                    </Button>
+                                </PaginationItem>
+                                <PaginationItem>
+                                    <Button
+                                        variant="outline"
+                                        size="icon"
+                                        onClick={() => setPage(p => Math.min(totalPages, p + 1))}
+                                        disabled={page === totalPages}
+                                        aria-label="Próxima página"
+                                        className="w-8 h-8"
+                                    >
+                                        <ChevronRight className="w-4 h-4" />
+                                    </Button>
+                                </PaginationItem>
+                                <PaginationItem>
+                                    <Button
+                                        variant="outline"
+                                        size="icon"
+                                        onClick={() => setPage(totalPages)}
+                                        disabled={page === totalPages}
+                                        aria-label="Última página"
+                                        className="w-8 h-8"
+                                    >
+                                        <ChevronsRight className="w-4 h-4" />
+                                    </Button>
+                                </PaginationItem>
+                            </PaginationContent>
+                        </div>
                     </div>
                 </div>
             </Card>

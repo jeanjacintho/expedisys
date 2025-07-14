@@ -12,40 +12,40 @@ export default function ReportsPage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 <Card className="p-4 gap-2">
-                    <div className="text-sm text-muted-foreground flex justify-between">
-                        Relatórios Gerados
-                        <BarChart3Icon />
+                    <div className="flex items-center justify-between">
+                        <h3 className="text-foreground font-medium">Relatórios Gerados</h3>
+                        <BarChart3Icon className="w-4 h-4 text-primary" />
                     </div>
                     <div className="text-2xl font-bold text-foreground">
                         0
                     </div>
-                    <div className="text-xs text-muted-foreground">
+                    <div className="text-foreground text-xs">
                         relatórios disponíveis
                     </div>
                 </Card>
 
                 <Card className="p-4 gap-2">
-                    <div className="text-sm text-muted-foreground flex justify-between">
-                        Receitas
-                        <TrendingUpIcon />
+                    <div className="flex items-center justify-between">
+                        <h3 className="text-foreground font-medium">Receitas</h3>
+                        <TrendingUpIcon className="w-4 h-4 text-primary" />
                     </div>
                     <div className="text-2xl font-bold text-foreground">
                         R$ 0
                     </div>
-                    <div className="text-xs text-muted-foreground">
+                    <div className="text-foreground text-xs">
                         total de receitas
                     </div>
                 </Card>
 
                 <Card className="p-4 gap-2">
-                    <div className="text-sm text-muted-foreground flex justify-between">
-                        Despesas
-                        <TrendingDownIcon />
+                    <div className="flex items-center justify-between">
+                        <h3 className="text-foreground font-medium">Despesas</h3>
+                        <TrendingDownIcon className="w-4 h-4 text-primary" />
                     </div>
                     <div className="text-2xl font-bold text-foreground">
                         R$ 0
                     </div>
-                    <div className="text-xs text-muted-foreground">
+                    <div className="text-foreground text-xs">
                         total de despesas
                     </div>
                 </Card>

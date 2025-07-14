@@ -4,7 +4,12 @@ import { useState, useEffect } from "react";
 import { ApiService } from "@/lib/api";
 import { Card } from "@/components/ui/card";
 import { AlertTriangleIcon } from "lucide-react";
-import { ExpeditionSuccessRate } from "@/components/analytics/expedition-success-rate";
+
+import { SuccessRateCharts } from "@/components/analytics/success-rate-charts";
+import { SuccessRateMetrics } from "@/components/analytics/success-rate-metrics";
+import { TeamPerformanceTable } from "@/components/analytics/team-performance-table";
+import { LocationPerformanceTable } from "@/components/analytics/location-performance-table";
+import { ExpeditionDetailTable } from "@/components/analytics/expedition-detail-table";
 
 interface Expedicao {
     id: number;
@@ -12,14 +17,35 @@ interface Expedicao {
     status: string;
     data_inicio: string;
     data_fim: string;
+    equipe?: {
+        id: number;
+        nome: string;
+    };
+}
+
+interface Equipe {
+    id: number;
+    nome: string;
+    lider_id: number;
+}
+
+interface Localizacao {
+    id: number;
+    pais: string;
+    latitude: number;
+    longitude: number;
 }
 
 // Hook personalizado para buscar dados
 function useAnalyticsData() {
     const [data, setData] = useState<{
         expedicoes: Expedicao[];
+        equipes: Equipe[];
+        localizacoes: Localizacao[];
     }>({
-        expedicoes: []
+        expedicoes: [],
+        equipes: [],
+        localizacoes: []
     });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -28,10 +54,16 @@ function useAnalyticsData() {
         async function fetchData() {
             try {
                 setLoading(true);
-                const expedicoesData = await ApiService.getExpedicoes();
+                const [expedicoesData, equipesData, localizacoesData] = await Promise.all([
+                    ApiService.getExpedicoes(),
+                    ApiService.getEquipes(),
+                    ApiService.getLocalizacoes(),
+                ]);
 
                 setData({
-                    expedicoes: expedicoesData
+                    expedicoes: expedicoesData,
+                    equipes: equipesData,
+                    localizacoes: localizacoesData
                 });
             } catch (err) {
                 setError('Erro ao carregar dados de analytics');
@@ -50,15 +82,36 @@ function useAnalyticsData() {
 // Componente de loading
 function AnalyticsSkeleton() {
     return (
-        <div className="flex flex-col gap-4 md:gap-4">
-            <Card className="p-6 animate-pulse">
-                <div className="h-6 bg-muted rounded mb-4"></div>
-                <div className="space-y-3">
-                    <div className="h-4 bg-muted rounded"></div>
-                    <div className="h-4 bg-muted rounded"></div>
-                    <div className="h-4 bg-muted rounded"></div>
-                </div>
-            </Card>
+        <div className="space-y-6">
+            <div className="animate-pulse">
+                <div className="h-8 bg-muted rounded w-64 mb-2"></div>
+                <div className="h-4 bg-muted rounded w-96"></div>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                {[...Array(4)].map((_, i) => (
+                    <Card key={i} className="p-6 animate-pulse">
+                        <div className="h-6 bg-muted rounded mb-4"></div>
+                        <div className="space-y-3">
+                            <div className="h-4 bg-muted rounded"></div>
+                            <div className="h-4 bg-muted rounded"></div>
+                        </div>
+                    </Card>
+                ))}
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                {[...Array(2)].map((_, i) => (
+                    <Card key={i} className="p-6 animate-pulse">
+                        <div className="h-6 bg-muted rounded mb-4"></div>
+                        <div className="space-y-3">
+                            <div className="h-4 bg-muted rounded"></div>
+                            <div className="h-4 bg-muted rounded"></div>
+                            <div className="h-4 bg-muted rounded"></div>
+                        </div>
+                    </Card>
+                ))}
+            </div>
         </div>
     );
 }
@@ -87,13 +140,20 @@ export default function SuccessRatePage() {
 
     return (
         <div className="flex flex-col gap-4 md:gap-4">
-            <div>
-                <h1 className="text-2xl font-bold text-foreground">Taxa de Sucesso</h1>
-                <p className="text-muted-foreground">
-                    Análise detalhada da taxa de sucesso das expedições
-                </p>
-            </div>
-            <ExpeditionSuccessRate expedicoes={data.expedicoes} />
+            {/* Métricas Principais */}
+            <SuccessRateMetrics expedicoes={data.expedicoes} />
+
+            {/* Charts e Gráficos */}
+            <SuccessRateCharts expedicoes={data.expedicoes} />
+
+            {/* Análise por Equipe */}
+            <TeamPerformanceTable equipes={data.equipes} expedicoes={data.expedicoes} />
+
+            {/* Análise por Localização */}
+            <LocationPerformanceTable localizacoes={data.localizacoes} expedicoes={data.expedicoes} />
+
+            {/* Tabela Detalhada */}
+            <ExpeditionDetailTable expedicoes={data.expedicoes} />
         </div>
     );
 } 

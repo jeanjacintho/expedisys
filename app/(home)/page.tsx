@@ -148,68 +148,78 @@ export default function HomePage() {
     <div className="flex flex-col gap-4 md:gap-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         <Card className="p-4 gap-2">
-          <div className="text-sm text-muted-foreground flex justify-between">Expedições Ativas
-            <MapPinnedIcon />
+          <div className="text-sm text-foreground flex justify-between font-medium">
+            Expedições Ativas
+            <MapPinnedIcon className="w-4 h-4 text-primary" />
           </div>
           <div className="text-2xl font-bold text-foreground">
             {stats.totalExpedicoes}
           </div>
-          <div className="text-xs text-muted-foreground">
+          <div className="text-xs text-foreground">
             {`${stats.totalExpedicoes} expedições em andamento`}
           </div>
         </Card>
         <Card className="p-4 gap-2">
-          <div className="text-sm text-muted-foreground flex justify-between">Artefatos Encontrados<ShovelIcon /></div>
+          <div className="text-sm text-foreground flex justify-between font-medium">
+            Artefatos Encontrados
+            <ShovelIcon className="w-4 h-4 text-primary" />
+          </div>
           <div className="text-2xl font-bold text-foreground">
             {stats.totalArtefatos}
           </div>
-          <div className="text-xs text-muted-foreground">
+          <div className="text-xs text-foreground">
             {`${stats.totalArtefatos} artefatos descobertos`}
           </div>
         </Card>
         <Card className="p-4 gap-2">
-          <div className="text-sm text-muted-foreground flex justify-between">Equipes Ativas<UsersRoundIcon /></div>
+          <div className="text-sm text-foreground flex justify-between font-medium">
+            Equipes Ativas
+            <UsersRoundIcon className="w-4 h-4 text-primary" />
+          </div>
           <div className="text-2xl font-bold text-foreground">
             {stats.totalEquipes}
           </div>
-          <div className="text-xs text-muted-foreground">
+          <div className="text-xs text-foreground">
             {`${stats.totalEquipes} equipes trabalhando`}
           </div>
         </Card>
         <Card className="p-4 gap-2">
-          <div className="text-sm text-muted-foreground flex justify-between">Sítios Arqueológicos<TentIcon /></div>
+          <div className="text-sm text-foreground flex justify-between font-medium">
+            Sítios Arqueológicos
+            <TentIcon className="w-4 h-4 text-primary" />
+          </div>
           <div className="text-2xl font-bold text-foreground">
             {stats.totalSitios}
           </div>
-          <div className="text-xs text-muted-foreground">
+          <div className="text-xs text-foreground">
             {`${stats.totalSitios} sítios sendo escavados`}
           </div>
         </Card>
       </div>
 
         {/* Main Content Grid - Challenges and Map */}
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-5 gap-4">
           {/* Challenges - Takes 1 column */}
-          <div className="col-span-1">
+          <div className="col-span-2">
             <RecentChallenges desafios={desafiosAtivos} loading={desafiosLoading} />
           </div>
 
           {/* Map - Takes 2 columns */}
-          <div className="col-span-2">
+          <div className="col-span-3">
             <Card className="p-0 flex flex-col w-full h-full">
               <LazyMap key={`map-${expedicoesAtivas.length}`} expedicoes={expedicoesAtivas} />
             </Card>
           </div>
         </div>
-        <div className="grid grid-cols-3 gap-4">
-          <div className="col-span-2">
+        <div className="grid grid-cols-5 gap-4">
+          <div className="col-span-3 w-full overflow-hidden">
             <ArtifactsChart
               expedicoesAtivas={expedicoesAtivas}
               artefatos={artefatos}
               loading={loading}
             />
           </div>
-                      <div className="col-span-1">
+                      <div className="col-span-2">
               <LastArtefactsFound 
                 expedicoesAtivas={expedicoesAtivas}
                 artefatos={artefatos}

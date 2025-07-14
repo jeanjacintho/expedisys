@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Pagination, PaginationContent, PaginationItem } from "@/components/ui/pagination";
 import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { Card } from "@/components/ui/card";
 import { 
   FilterIcon, 
@@ -70,21 +71,9 @@ interface Expedicao {
     descricao?: string;
 }
 
-function statusToVariant(status: string): "outline" | "default" | "destructive" | "secondary" {
-    if (status === "Concluída") return "outline";
-    if (status === "Em planejamento") return "outline";
-    if (status === "Em andamento") return "outline";
-    if (status === "Cancelada") return "outline";
-    return "outline";
-}
 
-function statusIcon(status: string) {
-    if (status === "Concluída") return <div className="bg-green-500 p-0.5 rounded-full"><CheckCircleIcon className="w-2 h-2 text-white" /></div>;
-    if (status === "Em andamento") return <div className="bg-blue-500 p-0.5 rounded-full"><ClockIcon className="w-2 h-2 text-white" /></div>;
-    if (status === "Em planejamento") return <div className="bg-yellow-500 p-0.5 rounded-full"><ClockIcon className="w-2 h-2 text-white" /></div>;
-    if (status === "Cancelada") return <div className="bg-red-500 p-0.5 rounded-full"><XIcon className="w-2 h-2 text-white" /></div>;
-    return null;
-}
+
+
 
 function calculateProgress(dataInicio: string, dataFim: string): number {
     const inicio = new Date(dataInicio);
@@ -306,62 +295,62 @@ export default function ExpeditionPage() {
             {/* Cards de Estatísticas */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                 <Card className="p-4 gap-2">
-                    <div className="text-sm text-muted-foreground flex justify-between">
+                    <div className="text-sm text-foreground flex justify-between font-medium">
                         Total de Expedições
-                        <UsersIcon />
+                        <UsersIcon className="w-4 h-4 text-primary" />
                     </div>
                     <div className="text-2xl font-bold text-foreground">
                         {estatisticas.totalExpedicoes}
                     </div>
-                    <div className="text-xs text-muted-foreground">
+                    <div className="text-xs text-foreground">
                         todas as expedições
                     </div>
                 </Card>
                 <Card className="p-4 gap-2">
-                    <div className="text-sm text-muted-foreground flex justify-between">
+                    <div className="text-sm text-foreground flex justify-between font-medium">
                         Em Andamento
-                        <ClockIcon />
+                        <ClockIcon className="w-4 h-4 text-primary" />
                     </div>
                     <div className="text-2xl font-bold text-foreground">
                         {estatisticas.emAndamento}
                     </div>
-                    <div className="text-xs text-muted-foreground">
+                    <div className="text-xs text-foreground">
                         expedições ativas
                     </div>
                 </Card>
                 <Card className="p-4 gap-2">
-                    <div className="text-sm text-muted-foreground flex justify-between">
+                    <div className="text-sm text-foreground flex justify-between font-medium">
                         Concluídas
-                        <CheckCircleIcon />
+                        <CheckCircleIcon className="w-4 h-4 text-primary" />
                     </div>
                     <div className="text-2xl font-bold text-foreground">
                         {estatisticas.concluidas}
                     </div>
-                    <div className="text-xs text-muted-foreground">
+                    <div className="text-xs text-foreground">
                         expedições finalizadas
                     </div>
                 </Card>
                 <Card className="p-4 gap-2">
-                    <div className="text-sm text-muted-foreground flex justify-between">
+                    <div className="text-sm text-foreground flex justify-between font-medium">
                         Em Planejamento
-                        <ClockIcon />
+                        <ClockIcon className="w-4 h-4 text-primary" />
                     </div>
                     <div className="text-2xl font-bold text-foreground">
                         {estatisticas.emPlanejamento}
                     </div>
-                    <div className="text-xs text-muted-foreground">
+                    <div className="text-xs text-foreground">
                         expedições planejadas
                     </div>
                 </Card>
                 <Card className="p-4 gap-2">
-                    <div className="text-sm text-muted-foreground flex justify-between">
+                    <div className="text-sm text-foreground flex justify-between font-medium">
                         Canceladas
-                        <AlertTriangleIcon />
+                        <AlertTriangleIcon className="w-4 h-4 text-primary" />
                     </div>
                     <div className="text-2xl font-bold text-foreground">
                         {estatisticas.canceladas}
                     </div>
-                    <div className="text-xs text-muted-foreground">
+                    <div className="text-xs text-foreground">
                         expedições canceladas
                     </div>
                 </Card>
@@ -531,41 +520,49 @@ export default function ExpeditionPage() {
                     {/* Tabela */}
                     <div className="border border-border rounded-lg overflow-hidden">
                         <Table>
-                            <TableHeader className="">
+                            <TableHeader>
                                 <TableRow>
-                                    <TableHead></TableHead>
-                                    <TableHead>Nome</TableHead>
-                                    <TableHead>Ruína</TableHead>
-                                    <TableHead>País</TableHead>
-                                    <TableHead>Equipe</TableHead>
-                                    <TableHead>Status</TableHead>
-                                    <TableHead>Início</TableHead>
-                                    <TableHead>Fim/Progresso</TableHead>
+                                    <TableHead className="w-4"></TableHead>
+                                    <TableHead className="text-foreground font-medium">Nome</TableHead>
+                                    <TableHead className="text-foreground font-medium">Ruína</TableHead>
+                                    <TableHead className="text-foreground font-medium">País</TableHead>
+                                    <TableHead className="text-foreground font-medium">Equipe</TableHead>
+                                    <TableHead className="text-foreground font-medium">Status</TableHead>
+                                    <TableHead className="text-foreground font-medium">Início</TableHead>
+                                    <TableHead className="text-foreground font-medium">Fim/Progresso</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
                                 {paginated.map((expedicao) => (
-                                    <TableRow key={expedicao.id}>
+                                    <TableRow key={expedicao.id} className="hover:bg-muted/50">
                                         <TableCell></TableCell>
-                                        <TableCell>{expedicao.nome}</TableCell>
-                                        <TableCell>{expedicao.ruina.nome}</TableCell>
-                                        <TableCell>{expedicao.localizacao.pais}</TableCell>
                                         <TableCell>
                                             <div className="flex flex-col gap-1">
-                                                <span className="text-sm font-medium">{expedicao.equipe.nome}</span>
+                                                <span className="text-foreground font-medium">{expedicao.nome}</span>
+                                                <span className="text-foreground text-xs">ID: {expedicao.id}</span>
+                                            </div>
+                                        </TableCell>
+                                        <TableCell>
+                                            <span className="text-foreground">{expedicao.ruina.nome}</span>
+                                        </TableCell>
+                                        <TableCell>
+                                            <span className="text-foreground">{expedicao.localizacao.pais}</span>
+                                        </TableCell>
+                                        <TableCell>
+                                            <div className="flex flex-col gap-1">
+                                                <span className="text-foreground font-medium">{expedicao.equipe.nome}</span>
                                                 <TeamAvatars pessoas={expedicao.equipe.pessoas || []} size="sm" maxVisible={3} />
                                             </div>
                                         </TableCell>
                                         <TableCell>
-                                            <Badge variant={statusToVariant(expedicao.status)}>
-                                                {statusIcon(expedicao.status)}
-                                                {expedicao.status}
-                                            </Badge>
+                                            <StatusBadge status={expedicao.status} />
                                         </TableCell>
-                                        <TableCell>{new Date(expedicao.data_inicio).toLocaleDateString()}</TableCell>
+                                        <TableCell>
+                                            <span className="text-foreground">{new Date(expedicao.data_inicio).toLocaleDateString()}</span>
+                                        </TableCell>
                                         <TableCell>
                                             {expedicao.status === "Concluída" || expedicao.status === "Cancelada" ? (
-                                                new Date(expedicao.data_fim).toLocaleDateString()
+                                                <span className="text-foreground">{new Date(expedicao.data_fim).toLocaleDateString()}</span>
                                             ) : (
                                                 <ProgressBar progress={calculateProgress(expedicao.data_inicio, expedicao.data_fim)} />
                                             )}
@@ -609,10 +606,9 @@ export default function ExpeditionPage() {
                     </div>
                     
                     {/* Paginação */}
-                    <div className="">
-                        <Pagination className="justify-between">
+                    <div className="flex items-center justify-between">
                             <div className="flex items-center space-x-4">
-                                <span className="text-sm">Rows per page:</span>
+                            <span className="text-foreground text-sm font-medium">Linhas por página:</span>
                                 <Select value={rowsPerPage.toString()} onValueChange={(value) => setRowsPerPage(Number(value))}>
                                     <SelectTrigger className="w-16">
                                         <SelectValue />
@@ -625,12 +621,12 @@ export default function ExpeditionPage() {
                                         <SelectItem value="50">50</SelectItem>
                                     </SelectContent>
                                 </Select>
-                                <span className="text-sm">
-                                    Showing {filteredExpedicoes.length > 0 ? ((page - 1) * rowsPerPage) + 1 : 0} to {Math.min(page * rowsPerPage, filteredExpedicoes.length)} of {filteredExpedicoes.length} results
+                            <span className="text-foreground text-sm">
+                                Mostrando {filteredExpedicoes.length > 0 ? ((page - 1) * rowsPerPage) + 1 : 0} a {Math.min(page * rowsPerPage, filteredExpedicoes.length)} de {filteredExpedicoes.length} resultados
                                 </span>
                             </div>
                             <div className="flex items-center space-x-2">
-                                <span className="text-sm text-muted-foreground">
+                            <span className="text-foreground text-sm font-medium">
                                     Página {page} de {totalPages}
                                 </span>
                                 <PaginationContent>
@@ -641,6 +637,7 @@ export default function ExpeditionPage() {
                                             onClick={() => setPage(1)}
                                             disabled={page === 1}
                                             aria-label="Primeira página"
+                                        className="w-8 h-8"
                                         >
                                             <ChevronsLeft className="w-4 h-4" />
                                         </Button>
@@ -652,6 +649,7 @@ export default function ExpeditionPage() {
                                             onClick={() => setPage(p => Math.max(1, p - 1))}
                                             disabled={page === 1}
                                             aria-label="Página anterior"
+                                        className="w-8 h-8"
                                         >
                                             <ChevronLeft className="w-4 h-4" />
                                         </Button>
@@ -663,6 +661,7 @@ export default function ExpeditionPage() {
                                             onClick={() => setPage(p => Math.min(totalPages, p + 1))}
                                             disabled={page === totalPages}
                                             aria-label="Próxima página"
+                                        className="w-8 h-8"
                                         >
                                             <ChevronRight className="w-4 h-4" />
                                         </Button>
@@ -674,13 +673,13 @@ export default function ExpeditionPage() {
                                             onClick={() => setPage(totalPages)}
                                             disabled={page === totalPages}
                                             aria-label="Última página"
+                                        className="w-8 h-8"
                                         >
                                             <ChevronsRight className="w-4 h-4" />
                                         </Button>
                                     </PaginationItem>
                                 </PaginationContent>
                             </div>
-                        </Pagination>
                     </div>
                 </div>
             </Card>

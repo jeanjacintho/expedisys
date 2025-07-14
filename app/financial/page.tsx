@@ -86,67 +86,59 @@ export default function FinancialPage() {
   }
 
   return (
-    <div className="container mx-auto p-6">
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-foreground">Financeiro</h1>
-        <p className="text-muted-foreground">
-          Análise financeira e gestão de despesas das expedições
-        </p>
+    <div className="flex flex-col gap-4 md:gap-4">
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <Card className="p-4 gap-2">
+          <div className="text-sm text-foreground flex justify-between font-medium">
+            Total de Despesas
+            <DollarSignIcon className="w-4 h-4 text-primary" />
+          </div>
+          <div className="text-2xl font-bold text-foreground">
+            R$ {totalDespesas.toLocaleString()}
       </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total de Despesas</CardTitle>
-            <DollarSignIcon className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">R$ {totalDespesas.toLocaleString()}</div>
-            <p className="text-xs text-muted-foreground">
+          <div className="text-xs text-foreground">
               Total gasto com desafios
-            </p>
-          </CardContent>
+          </div>
         </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Desafios Ativos</CardTitle>
-            <AlertCircleIcon className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{totalDesafios}</div>
-            <p className="text-xs text-muted-foreground">
+        <Card className="p-4 gap-2">
+          <div className="text-sm text-foreground flex justify-between font-medium">
+            Desafios Ativos
+            <AlertCircleIcon className="w-4 h-4 text-primary" />
+          </div>
+          <div className="text-2xl font-bold text-foreground">
+            {totalDesafios}
+          </div>
+          <div className="text-xs text-foreground">
               Desafios enfrentados
-            </p>
-          </CardContent>
+          </div>
         </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Média por Desafio</CardTitle>
-            <TrendingUpIcon className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">R$ {mediaDespesaPorDesafio.toLocaleString()}</div>
-            <p className="text-xs text-muted-foreground">
+        <Card className="p-4 gap-2">
+          <div className="text-sm text-foreground flex justify-between font-medium">
+            Média por Desafio
+            <TrendingUpIcon className="w-4 h-4 text-primary" />
+          </div>
+          <div className="text-2xl font-bold text-foreground">
+            R$ {mediaDespesaPorDesafio.toLocaleString()}
+          </div>
+          <div className="text-xs text-foreground">
               Custo médio por desafio
-            </p>
-          </CardContent>
+          </div>
         </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Expedições Ativas</CardTitle>
-            <UsersIcon className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
+        <Card className="p-4 gap-2">
+          <div className="text-sm text-foreground flex justify-between font-medium">
+            Expedições Ativas
+            <UsersIcon className="w-4 h-4 text-primary" />
+          </div>
+          <div className="text-2xl font-bold text-foreground">
               {expedicoes.filter(e => e.status === "Em andamento").length}
             </div>
-            <p className="text-xs text-muted-foreground">
+          <div className="text-xs text-foreground">
               Expedições em andamento
-            </p>
-          </CardContent>
+          </div>
         </Card>
       </div>
 

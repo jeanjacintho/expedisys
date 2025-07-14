@@ -11,6 +11,9 @@ interface Expedicao {
     nome: string;
     status: string;
     Localizacao_id: number;
+    data_inicio: string;
+    data_fim: string;
+    localizacao?: Localizacao;
 }
 
 interface Localizacao {

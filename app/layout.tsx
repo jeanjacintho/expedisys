@@ -26,7 +26,7 @@ export default function RootLayout({
       <body className={`${inter.variable} antialiased`}>
       <ThemeProvider
             attribute="class"
-            defaultTheme="system"
+            defaultTheme="light"
             enableSystem
             disableTransitionOnChange
           >

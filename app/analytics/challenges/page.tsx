@@ -4,7 +4,12 @@ import { useState, useEffect } from "react";
 import { ApiService } from "@/lib/api";
 import { Card } from "@/components/ui/card";
 import { AlertTriangleIcon } from "lucide-react";
-import { ChallengeAnalysis } from "@/components/analytics/challenge-analysis";
+
+import { ChallengeMetrics } from "@/components/analytics/challenge-metrics";
+import { ChallengeCharts } from "@/components/analytics/challenge-charts";
+import { ChallengeRiskTable } from "@/components/analytics/challenge-risk-table";
+import { ChallengeCostTable } from "@/components/analytics/challenge-cost-table";
+import { ChallengeDetailTable } from "@/components/analytics/challenge-detail-table";
 
 interface Desafio {
     id: number;
@@ -18,14 +23,24 @@ interface DesafioHasExpedicao {
     despesa_adicional: number;
 }
 
+interface Expedicao {
+    id: number;
+    nome: string;
+    status: string;
+    data_inicio: string;
+    data_fim: string;
+}
+
 // Hook personalizado para buscar dados
 function useAnalyticsData() {
     const [data, setData] = useState<{
         desafios: Desafio[];
         desafioHasExpedicao: DesafioHasExpedicao[];
+        expedicoes: Expedicao[];
     }>({
         desafios: [],
-        desafioHasExpedicao: []
+        desafioHasExpedicao: [],
+        expedicoes: []
     });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -34,14 +49,16 @@ function useAnalyticsData() {
         async function fetchData() {
             try {
                 setLoading(true);
-                const [desafiosData, desafioHasExpedicaoData] = await Promise.all([
+                const [desafiosData, desafioHasExpedicaoData, expedicoesData] = await Promise.all([
                     ApiService.getDesafios(),
                     ApiService.getDesafioHasExpedicao(),
+                    ApiService.getExpedicoes(),
                 ]);
 
                 setData({
                     desafios: desafiosData,
-                    desafioHasExpedicao: desafioHasExpedicaoData
+                    desafioHasExpedicao: desafioHasExpedicaoData,
+                    expedicoes: expedicoesData
                 });
             } catch (err) {
                 setError('Erro ao carregar dados de analytics');
@@ -60,15 +77,36 @@ function useAnalyticsData() {
 // Componente de loading
 function AnalyticsSkeleton() {
     return (
-        <div className="flex flex-col gap-4 md:gap-4">
-            <Card className="p-6 animate-pulse">
-                <div className="h-6 bg-muted rounded mb-4"></div>
-                <div className="space-y-3">
-                    <div className="h-4 bg-muted rounded"></div>
-                    <div className="h-4 bg-muted rounded"></div>
-                    <div className="h-4 bg-muted rounded"></div>
-                </div>
-            </Card>
+        <div className="space-y-6">
+            <div className="animate-pulse">
+                <div className="h-8 bg-muted rounded w-64 mb-2"></div>
+                <div className="h-4 bg-muted rounded w-96"></div>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                {[...Array(4)].map((_, i) => (
+                    <Card key={i} className="p-6 animate-pulse">
+                        <div className="h-6 bg-muted rounded mb-4"></div>
+                        <div className="space-y-3">
+                            <div className="h-4 bg-muted rounded"></div>
+                            <div className="h-4 bg-muted rounded"></div>
+                        </div>
+                    </Card>
+                ))}
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                {[...Array(2)].map((_, i) => (
+                    <Card key={i} className="p-6 animate-pulse">
+                        <div className="h-6 bg-muted rounded mb-4"></div>
+                        <div className="space-y-3">
+                            <div className="h-4 bg-muted rounded"></div>
+                            <div className="h-4 bg-muted rounded"></div>
+                            <div className="h-4 bg-muted rounded"></div>
+                        </div>
+                    </Card>
+                ))}
+            </div>
         </div>
     );
 }
@@ -97,16 +135,20 @@ export default function ChallengesPage() {
 
     return (
         <div className="flex flex-col gap-4 md:gap-4">
-            <div>
-                <h1 className="text-2xl font-bold text-foreground">Análise de Desafios</h1>
-                <p className="text-muted-foreground">
-                    Análise detalhada dos desafios enfrentados durante as expedições
-                </p>
-            </div>
-            <ChallengeAnalysis 
-                desafios={data.desafios} 
-                desafioHasExpedicao={data.desafioHasExpedicao} 
-            />
+            {/* Métricas Principais */}
+            <ChallengeMetrics desafios={data.desafios} desafioHasExpedicao={data.desafioHasExpedicao} />
+
+            {/* Charts e Gráficos */}
+            <ChallengeCharts desafios={data.desafios} desafioHasExpedicao={data.desafioHasExpedicao} />
+
+            {/* Análise por Risco */}
+            <ChallengeRiskTable desafios={data.desafios} desafioHasExpedicao={data.desafioHasExpedicao} expedicoes={data.expedicoes} />
+
+            {/* Análise por Custo */}
+            <ChallengeCostTable desafios={data.desafios} desafioHasExpedicao={data.desafioHasExpedicao} expedicoes={data.expedicoes} />
+
+            {/* Tabela Detalhada */}
+            <ChallengeDetailTable desafios={data.desafios} desafioHasExpedicao={data.desafioHasExpedicao} expedicoes={data.expedicoes} />
         </div>
     );
 } 

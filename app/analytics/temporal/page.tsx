@@ -4,7 +4,9 @@ import { useState, useEffect } from "react";
 import { ApiService } from "@/lib/api";
 import { Card } from "@/components/ui/card";
 import { AlertTriangleIcon } from "lucide-react";
-import { TemporalAnalysis } from "@/components/analytics/temporal-analysis";
+import { TemporalMetrics } from "@/components/analytics/temporal-metrics";
+import { TemporalCharts } from "@/components/analytics/temporal-charts";
+import { TemporalTable } from "@/components/analytics/temporal-table";
 
 interface Expedicao {
     id: number;
@@ -50,8 +52,27 @@ function useAnalyticsData() {
 // Componente de loading
 function AnalyticsSkeleton() {
     return (
-        <div className="flex flex-col gap-4 md:gap-4">
-            <Card className="p-6 animate-pulse">
+        <div className="space-y-6">
+            <div className="animate-pulse">
+                <div className="h-8 bg-muted rounded w-64 mb-2"></div>
+                <div className="h-4 bg-muted rounded w-96"></div>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                {[...Array(4)].map((_, i) => (
+                    <Card key={i} className="p-6 animate-pulse">
+                        <div className="h-6 bg-muted rounded mb-4"></div>
+                        <div className="space-y-3">
+                            <div className="h-4 bg-muted rounded"></div>
+                            <div className="h-4 bg-muted rounded"></div>
+                        </div>
+                    </Card>
+                ))}
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                {[...Array(2)].map((_, i) => (
+                    <Card key={i} className="p-6 animate-pulse">
                 <div className="h-6 bg-muted rounded mb-4"></div>
                 <div className="space-y-3">
                     <div className="h-4 bg-muted rounded"></div>
@@ -59,6 +80,8 @@ function AnalyticsSkeleton() {
                     <div className="h-4 bg-muted rounded"></div>
                 </div>
             </Card>
+                ))}
+            </div>
         </div>
     );
 }
@@ -74,7 +97,7 @@ export default function TemporalPage() {
     if (error) {
         return (
             <div className="flex flex-col gap-4">
-                <Card className="p-6">
+                <Card className="p-4 gap-2">
                     <div className="text-center text-red-600">
                         <AlertTriangleIcon className="w-12 h-12 mx-auto mb-4" />
                         <h3 className="text-lg font-semibold mb-2">Erro ao Carregar Dados</h3>
@@ -87,13 +110,14 @@ export default function TemporalPage() {
 
     return (
         <div className="flex flex-col gap-4 md:gap-4">
-            <div>
-                <h1 className="text-2xl font-bold text-foreground">Análise Temporal</h1>
-                <p className="text-muted-foreground">
-                    Análise temporal e sazonal das expedições ao longo do tempo
-                </p>
-            </div>
-            <TemporalAnalysis expedicoes={data.expedicoes} />
+            {/* Métricas Principais */}
+            <TemporalMetrics expedicoes={data.expedicoes} />
+
+            {/* Charts e Gráficos */}
+            <TemporalCharts expedicoes={data.expedicoes} />
+
+            {/* Tabela Detalhada */}
+            <TemporalTable expedicoes={data.expedicoes} />
         </div>
     );
 } 

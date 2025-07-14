@@ -2,13 +2,15 @@
 
 import { useState, useEffect } from "react";
 import { ApiService } from "@/lib/api";
-import { Card } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { AlertTriangleIcon } from "lucide-react";
 import { ExpeditionSuccessRate } from "@/components/analytics/expedition-success-rate";
-import { TemporalAnalysis } from "@/components/analytics/temporal-analysis";
-import { ChallengeAnalysis } from "@/components/analytics/challenge-analysis";
 import { LocationAnalysis } from "@/components/analytics/location-analysis";
 import { InsightsRecommendations } from "@/components/analytics/insights-recommendations";
+import { TemporalMetrics } from "@/components/analytics/temporal-metrics";
+import { TemporalCharts } from "@/components/analytics/temporal-charts";
+import { ChallengeMetrics } from "@/components/analytics/challenge-metrics";
+import { ChallengeCharts } from "@/components/analytics/challenge-charts";
 
 interface Expedicao {
     id: number;
@@ -100,7 +102,7 @@ function useAnalyticsData() {
 function AnalyticsSkeleton() {
     return (
         <div className="flex flex-col gap-4 md:gap-4">
-            <Card className="p-6 animate-pulse">
+            <Card className="p-4 animate-pulse">
                 <div className="h-6 bg-muted rounded mb-4"></div>
                 <div className="space-y-3">
                     <div className="h-4 bg-muted rounded"></div>
@@ -123,7 +125,7 @@ export default function AnalyticsPage() {
     if (error) {
         return (
             <div className="flex flex-col gap-4">
-                <Card className="p-6">
+                <Card className="p-4 gap-2">
                     <div className="text-center text-red-600">
                         <AlertTriangleIcon className="w-12 h-12 mx-auto mb-4" />
                         <h3 className="text-lg font-semibold mb-2">Erro ao Carregar Dados</h3>
@@ -135,30 +137,48 @@ export default function AnalyticsPage() {
     }
 
     return (
-        <div className="flex flex-col gap-4 md:gap-4">
-            <div>
-                <h1 className="text-2xl font-bold text-foreground">Analytics</h1>
-                <p className="text-muted-foreground">
-                    Análise completa e insights sobre o desempenho das expedições
-                </p>
+        <div className="flex flex-col gap-4">
+
+            <div className="flex gap-4">
+                
+            {/* Métricas principais e taxa de sucesso */}
+                <div className="">
+                    
+                    <TemporalMetrics expedicoes={data.expedicoes} />
+                </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                <ExpeditionSuccessRate expedicoes={data.expedicoes} />
-                <TemporalAnalysis expedicoes={data.expedicoes} />
+            {/* Gráficos resumidos: Temporal e Desafios */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <Card className="p-4 flex flex-col h-full">
+                    <CardHeader>
+                        <CardTitle>Análise Temporal</CardTitle>
+                        <CardDescription>Visão resumida da evolução temporal das expedições</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <TemporalCharts expedicoes={data.expedicoes} />
+                    </CardContent>
+                </Card>
+                <Card className="p-4 flex flex-col h-full">
+                    <CardHeader>
+                        <CardTitle>Análise de Desafios</CardTitle>
+                        <CardDescription>Visão resumida dos desafios enfrentados</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <ChallengeCharts desafios={data.desafios} desafioHasExpedicao={data.desafioHasExpedicao} />
+                    </CardContent>
+                </Card>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                <ChallengeAnalysis 
-                    desafios={data.desafios}
-                    desafioHasExpedicao={data.desafioHasExpedicao}
-                />
+            {/* Análise por Localização */}
+            <div className="grid grid-cols-1">
                 <LocationAnalysis 
                     expedicoes={data.expedicoes}
                     localizacoes={data.localizacoes}
                 />
             </div>
 
+            {/* Insights e Recomendações */}
             <InsightsRecommendations 
                 expedicoes={data.expedicoes}
                 desafioHasExpedicao={data.desafioHasExpedicao}

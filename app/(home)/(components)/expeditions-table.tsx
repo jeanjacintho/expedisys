@@ -20,6 +20,7 @@ import {
   PaginationItem,
 } from "@/components/ui/pagination"
 import { Badge } from "@/components/ui/badge"
+import { StatusBadge } from "@/components/ui/status-badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -80,21 +81,9 @@ interface ExpedicaoComDetalhes extends Expedicao {
   status: string
 }
 
-function statusToVariant(status: string): "outline" | "default" | "destructive" | "secondary" {
-  if (status === "Concluída") return "outline";
-  if (status === "Em planejamento") return "outline";
-  if (status === "Em andamento") return "outline";
-  if (status === "Cancelada") return "outline";
-  return "outline";
-}
 
-function statusIcon(status: string) {
-  if (status === "Concluída") return <div className="bg-green-500 p-0.5 rounded-full"><CheckIcon className="w-2 h-2 text-white" /></div>;
-  if (status === "Em andamento") return <Loader2Icon className="w-3 h-3 animate-spin" />;
-  if (status === "Em planejamento") return <ClockIcon className="w-3 h-3" />;
-  if (status === "Cancelada") return <div className="bg-red-500 p-0.5 rounded-full"><XIcon className="w-2 h-2 text-white" /></div>;
-  return null;
-}
+
+
 
 function calculateProgress(dataInicio: string, dataFim: string): number {
   const inicio = new Date(dataInicio);
@@ -503,42 +492,50 @@ export function ExpeditionsTable() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead></TableHead>
-              <TableHead>Nome</TableHead>
-              <TableHead>Ruína</TableHead>
-              <TableHead>País</TableHead>
-              <TableHead>Equipe</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Início</TableHead>
-              <TableHead>Fim/Progresso</TableHead>
+              <TableHead className="w-4"></TableHead>
+              <TableHead className="text-foreground font-medium">Nome</TableHead>
+              <TableHead className="text-foreground font-medium">Ruína</TableHead>
+              <TableHead className="text-foreground font-medium">País</TableHead>
+              <TableHead className="text-foreground font-medium">Equipe</TableHead>
+              <TableHead className="text-foreground font-medium">Status</TableHead>
+              <TableHead className="text-foreground font-medium">Início</TableHead>
+              <TableHead className="text-foreground font-medium">Fim/Progresso</TableHead>
               <TableHead></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {paginated.map((expedicao) => (
-              <TableRow key={expedicao.id}>
+              <TableRow key={expedicao.id} className="hover:bg-muted/50">
                 <TableCell></TableCell>
-                <TableCell className="font-medium max-w-[180px] truncate">
-                  {expedicao.nome.length > 30 ? `${expedicao.nome.slice(0, 30)}...` : expedicao.nome}
-                </TableCell>
-                <TableCell>{expedicao.ruina?.nome}</TableCell>
-                <TableCell>{expedicao.localizacao?.pais}</TableCell>
                 <TableCell>
                   <div className="flex flex-col gap-1">
-                    <span className="text-sm font-medium">{expedicao.equipe?.nome}</span>
-                    <TeamAvatars pessoas={expedicao.equipe?.pessoas || []} size="sm" maxVisible={3} />
+                    <span className="text-foreground font-medium max-w-[180px] truncate">
+                  {expedicao.nome.length > 30 ? `${expedicao.nome.slice(0, 30)}...` : expedicao.nome}
+                    </span>
+                    <span className="text-foreground text-xs">ID: {expedicao.id}</span>
                   </div>
                 </TableCell>
                 <TableCell>
-                  <Badge variant={statusToVariant(expedicao.status)}>
-                    {statusIcon(expedicao.status)}
-                    {expedicao.status}
-                  </Badge>
+                  <span className="text-foreground">{expedicao.ruina?.nome}</span>
                 </TableCell>
-                <TableCell>{formatarData(expedicao.data_inicio)}</TableCell>
+                <TableCell>
+                  <span className="text-foreground">{expedicao.localizacao?.pais}</span>
+                </TableCell>
+                <TableCell>
+                  <div className="flex flex-col gap-1">
+                    <span className="text-foreground font-medium">{expedicao.equipe?.nome}</span>
+                    <TeamAvatars pessoas={expedicao.equipe?.pessoas || []} size="sm" maxVisible={3} />
+                  </div>
+                </TableCell>
+                                                <TableCell>
+                                  <StatusBadge status={expedicao.status} />
+                </TableCell>
+                <TableCell>
+                  <span className="text-foreground">{formatarData(expedicao.data_inicio)}</span>
+                </TableCell>
                 <TableCell>
                   {expedicao.status === "Concluída" || expedicao.status === "Cancelada" ? (
-                    formatarData(expedicao.data_fim)
+                    <span className="text-foreground">{formatarData(expedicao.data_fim)}</span>
                   ) : (
                     <ProgressBar progress={calculateProgress(expedicao.data_inicio, expedicao.data_fim)} />
                   )}
@@ -583,9 +580,9 @@ export function ExpeditionsTable() {
         </Table>
       </div>
       
-      <Pagination className="justify-between">
+      <div className="flex items-center justify-between">
         <div className="flex items-center space-x-4">
-          <span className="text-sm">Rows per page:</span>
+          <span className="text-foreground text-sm font-medium">Linhas por página:</span>
           <Select value={rowsPerPage.toString()} onValueChange={(value) => setRowsPerPage(Number(value))}>
             <SelectTrigger className="w-16">
               <SelectValue />
@@ -598,12 +595,12 @@ export function ExpeditionsTable() {
               <SelectItem value="50">50</SelectItem>
             </SelectContent>
           </Select>
-          <span className="text-sm">
-            Showing {filteredExpedicoes.length > 0 ? ((page - 1) * rowsPerPage) + 1 : 0} to {Math.min(page * rowsPerPage, filteredExpedicoes.length)} of {filteredExpedicoes.length} results
+          <span className="text-foreground text-sm">
+            Mostrando {filteredExpedicoes.length > 0 ? ((page - 1) * rowsPerPage) + 1 : 0} a {Math.min(page * rowsPerPage, filteredExpedicoes.length)} de {filteredExpedicoes.length} resultados
           </span>
         </div>
         <div className="flex items-center space-x-2">
-          <span className="text-sm text-muted-foreground">
+          <span className="text-foreground text-sm font-medium">
             Página {page} de {totalPages}
           </span>
           <PaginationContent>
@@ -614,6 +611,7 @@ export function ExpeditionsTable() {
                 onClick={() => setPage(1)}
                 disabled={page === 1}
                 aria-label="Primeira página"
+                className="w-8 h-8"
               >
                 <ChevronsLeft className="w-4 h-4" />
               </Button>
@@ -625,6 +623,7 @@ export function ExpeditionsTable() {
                 onClick={() => setPage(p => Math.max(1, p - 1))}
                 disabled={page === 1}
                 aria-label="Página anterior"
+                className="w-8 h-8"
               >
                 <ChevronLeft className="w-4 h-4" />
               </Button>
@@ -636,6 +635,7 @@ export function ExpeditionsTable() {
                 onClick={() => setPage(p => Math.min(totalPages, p + 1))}
                 disabled={page === totalPages}
                 aria-label="Próxima página"
+                className="w-8 h-8"
               >
                 <ChevronRight className="w-4 h-4" />
               </Button>
@@ -647,13 +647,14 @@ export function ExpeditionsTable() {
                 onClick={() => setPage(totalPages)}
                 disabled={page === totalPages}
                 aria-label="Última página"
+                className="w-8 h-8"
               >
                 <ChevronsRight className="w-4 h-4" />
               </Button>
             </PaginationItem>
           </PaginationContent>
         </div>
-      </Pagination>
+      </div>
       
       {filteredExpedicoes.length === 0 && (
         <div className="text-center text-muted-foreground">
